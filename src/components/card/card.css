@@ -7,12 +7,12 @@
 }
 
 .card1{
-    border-radius: 5px;
     display: flex;
     cursor: pointer;
     backface-visibility: hidden;
     flex-direction: column;
     vertical-align: middle;
+    background-color: #F5D372;
 }
 
 .card1>img{

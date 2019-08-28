@@ -1,9 +1,15 @@
 .footer{
-    background-color: #262626;
+    background-color: #4a4022;
     height: auto;
     padding: 20px;
     text-align: right;
-    
+    float: left;
+    width: 100%;
+
+    position: absolute;
+    bottom: 0;
+    margin-bottom: -3rem;
+
 }
 
 .sub-foot{

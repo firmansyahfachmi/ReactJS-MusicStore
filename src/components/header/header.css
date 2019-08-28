@@ -2,5 +2,7 @@
     background-color: #F5D372;
     height:90px;
     padding: 10px;
-    
+    position: sticky;
+    top: 0;
+    z-index: 5;
 }

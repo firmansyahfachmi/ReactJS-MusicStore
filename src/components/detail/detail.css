@@ -1,0 +1,68 @@
+.detail{
+    height: auto;
+    padding: 60px 60px 60px 55px;
+    float: left;
+    margin: 0;
+    width: 100%;
+}
+
+.image{
+    background-color: #fce7ac;
+    height: auto;
+    float: left;
+    padding: 15px;
+    border: 1px solid #fce7ac;
+    border-radius: 5px;
+}
+
+.image>img{
+    display: block;
+    height: 300px;
+    margin:0 auto;
+    width:auto;
+    
+}
+
+.detailed{
+    float: right;
+    height:auto;
+    padding: 20px 20px 20px 40px;
+}
+
+.detailHead{
+    float: left;
+    width: 100%;
+}
+
+.detailBody {
+    margin-top: 5px;
+    float: left;
+    width: 100%;
+    padding:10px 0 10px 0;
+    
+}
+
+.detailFoot{
+    float: left;
+    
+    vertical-align: middle;
+    width:auto;
+}
+
+.info{
+   
+    border: 1px solid grey;
+    border-radius: 3px; 
+    padding: 5px;
+    width:200px;
+     
+}
+
+.title{
+    float:left;
+    
+}
+
+.butgroup{
+    margin-right: 10px;
+}
