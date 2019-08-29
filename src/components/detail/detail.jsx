@@ -12,7 +12,8 @@ class Detail extends Component{
     constructor(props){
         super(props);
         this.state = {
-            data: []
+            data: [],
+            dataFiltered: []
         }
     }
 
@@ -23,7 +24,7 @@ class Detail extends Component{
             data.name.toLowerCase().includes(this.props.match.params.name.toLowerCase())
         )
 
-        this.setState({ data: filtered[0] })
+        this.setState({ dataFiltered: filtered[0] })
     }
 
     remove = (i) => {
@@ -48,7 +49,7 @@ class Detail extends Component{
 
     render(){ 
 
-        let data = this.state.data;
+        let data = this.state.dataFiltered;
         return(
             <Fragment>
                
