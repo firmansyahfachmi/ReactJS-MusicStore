@@ -10,12 +10,6 @@ import Item from "./components/item/item.jsx";
 import './App.css';
 
 class App extends Component{
-  constructor(){
-    super();
-    this.state = {
-      name: "hallo"
-    }
-  }
 
   render(){
     return(
