@@ -9,25 +9,41 @@ class ModalLayer extends Component{
         this.state = {
             showModal: false,
             data : {
-                
+                name: "",
+                category: "",
+                branch: "",
+                qty: "",
+                price: "",
+                desc: "",
+                url: ""
+
             }
         }
+    }
+
+    componentDidMount(){
+        const temp = this.props.data;
+        this.setState({ data: temp })
     }
     
 
     handleChange = ( event ) => {
+        
         let formData = {...this.state.data}
         formData[event.target.name] = event.target.value
         this.setState({
             data : formData
         });
+        
     };
 
     handleClose = () => this.setState({showModal: false});
     handleShow = () => this.setState({ showModal: true });
 
     render(){
-
+        
+        const temp = this.state.data;
+        
         return (
             <Fragment>
                 
@@ -42,18 +58,18 @@ class ModalLayer extends Component{
                         <Form ref="form">
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    Product Name
+                                    <b>Product Name</b>
                                 </Form.Label>
                                 <Col sm={8}>
-                                    <Form.Control type="text" value={this.props.data.name} name="name" onChange={this.handleChange}/>
+                                    <Form.Control type="text" defaultValue={temp.name} name="name" onChange={this.handleChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    Category
+                                    <b>Category</b>
                                 </Form.Label>
                                 <Col sm={6}>
-                                    <Form.Control as="select" name="category" onChange={this.handleChange}>
+                                    <Form.Control as="select" name="category" defaultValue={temp.category} onChange={this.handleChange}>
                                         <option>---</option>
                                         <option>Violin</option>
                                         <option>Guitar</option>
@@ -64,10 +80,10 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    Branch
+                                    <b>Branch</b>
                                 </Form.Label>
                                 <Col sm={6}>
-                                    <Form.Control as="select" name="branch" onChange={this.handleChange}>
+                                    <Form.Control as="select" defaultValue={temp.branch} name="branch" onChange={this.handleChange}>
                                         <option>---</option>
                                         <option>Jakarta</option>
                                         <option>Malang</option>
@@ -78,34 +94,34 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    Quantity
+                                    <b>Quantity</b>
                                 </Form.Label>
                                 <Col sm={7}>
-                                    <Form.Control type="number" name="qty" onChange={this.handleChange}/>
+                                    <Form.Control type="number" name="qty" defaultValue={temp.qty} onChange={this.handleChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    Price
+                                    <b>Price</b>
                                 </Form.Label>
                                 <Col sm={7}>
-                                    <Form.Control type="number" name="price" onChange={this.handleChange}/>
+                                    <Form.Control type="number" name="price" defaultValue={temp.price} onChange={this.handleChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    Description
+                                    <b>Description</b>
                                 </Form.Label>
                                 <Col sm={7}>
-                                    <Form.Control as="textarea" name="desc" onChange={this.handleChange}/>
+                                    <Form.Control as="textarea" name="desc" defaultValue={temp.desc} onChange={this.handleChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    Image URL
+                                    <b>Image URL</b>
                                 </Form.Label>
                                 <Col sm={7}>
-                                    <Form.Control type="text" name="url" onChange={this.handleChange}/>
+                                    <Form.Control type="text" name="url" defaultValue={temp.url} onChange={this.handleChange}/>
                                 </Col>
                             </Form.Group>
                         </Form>
@@ -114,10 +130,11 @@ class ModalLayer extends Component{
                     <Modal.Footer style={{ border: "none" }}>
                         <Button variant="light" style={{ color: "white", paddingLeft: 30, paddingRight: 30, backgroundColor: "#E28935" }} onClick={() => {
                             this.props.handle(this.state.data)
+                            
                             this.setState({showModal:false})
                         }
                         }
-                            >Add</Button>
+                            >Update</Button>
                     </Modal.Footer>
                 </Modal>
             </Fragment>

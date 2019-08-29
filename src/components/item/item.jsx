@@ -75,7 +75,9 @@ class Item extends Component {
             <div className="item">
                 <ModalLayer handle={this.addData}/>
 
-                    <CardItem key={this.state.data.id} data={filtered} />
+                {
+                    (filtered.length > 0) ? <CardItem key={this.state.data.id} data={filtered} /> : <h1 style={{marginTop:20,}}>No Data</h1>
+                }
         </div>
         </Fragment>
         )

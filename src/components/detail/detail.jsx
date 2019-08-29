@@ -16,8 +16,14 @@ class Detail extends Component{
         }
     }
 
-    componentDidMount() {
-        this.setState({ data: Datane })
+    componentDidMount = async () => {
+        await this.setState({ data: Datane })
+
+        const filtered = this.state.data.filter(data =>
+            data.name.toLowerCase().includes(this.props.match.params.name.toLowerCase())
+        )
+
+        this.setState({ data: filtered[0] })
     }
 
     remove = (i) => {
@@ -30,20 +36,23 @@ class Detail extends Component{
     }
 
     updateData = (result) => {
-        
-       this.setState({ data: result })
+        this.setState({
+            data: result
+            
+        })
+
 
     }
 
     
 
-    render(){
-        const filtered = this.state.data.filter(data =>
-            data.name.toLowerCase().includes(this.props.match.params.name.toLowerCase())
-        )
+    render(){ 
+
+        let data = this.state.data;
         return(
             <Fragment>
-               {filtered.map(data => (
+               
+                   
                 <div className="detail" key={data.id}>
                     <div className="image col-md-3 shadow" >
                            <img src={data.url} alt={data.name} />
@@ -52,7 +61,7 @@ class Detail extends Component{
                         <div className="detailHead">
                             <h3 className="title">{data.name}</h3>
                             <div style={{float:"right"}}>
-                                <ModalLayer data={filtered} handle={this.updateData}/>
+                                    <ModalLayer data={data} handle={this.updateData}/>
                                 <Link to={`/item/${data.category}`}>
                                     <Button variant="danger" title="Delete" onClick={() => this.remove(data.id)}><i className="fa fa-trash" ></i></Button>
                                 </Link>
@@ -78,7 +87,7 @@ class Detail extends Component{
                         </div>
                     </div>
                 </div>
-                ))}
+               
             </Fragment>  
         )
     }

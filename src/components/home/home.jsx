@@ -78,7 +78,7 @@ class Home extends Component{
             <div className="home">
                 <ModalLayer handle={this.addData}/>
 
-                <CardHome key={data.id} data={filtered} />
+                    {(filtered.length > 0) ? <CardHome key={data.id} data={filtered} /> : <h1 style={{ marginTop: 20, textAlign:"center" }} className="alert alert-danger">No Data</h1> }
                 
                 
             </div>
