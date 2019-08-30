@@ -27,11 +27,14 @@ class Item extends Component {
 
 
     addData = (result) => {
-       
-        this.state.data.push(result)
+        if (Object.keys(result).length > 0) {
+            this.state.data.push(result);
 
-        this.setState({ data: this.state.data })
-
+            this.setState({ data: this.state.data })
+        } else {
+            alert("Data harus di isi !!")
+            window.location.reload()
+        }
     }
 
 
@@ -46,13 +49,16 @@ class Item extends Component {
 
                 )
                 filtered = searched;
-            }else{
-                filtered = this.state.data.filter(data =>
+            } else{
+                filtered = data.filter(data =>
                     data.category.toLowerCase().includes(this.props.match.params.category.toLowerCase())
                 )
             }
         }
 
+        // filtered = data.filter(data =>
+        //     data.name.toLowerCase().includes(search.toLowerCase())
+        // )
         
 
         
@@ -63,7 +69,7 @@ class Item extends Component {
 
                     <div className="input-group col-lg-11 shadow p-0 mb-1 bg-white rounded" style={{ float: "left"}}>
                         <div className="input-group-prepend" >
-                            <div className="input-group-text" style={{ border: 0 }}><i className="fa fa-search"></i></div>
+                                <div className="input-group-text bg-white" style={{ border: 0 }}><i className="fa fa-search"></i></div>
                         </div>
 
                         <Search handleChange={e => this.setState({ search: e.target.value })} />

@@ -15,6 +15,7 @@ class ModalLayer extends Component {
     }
 
     handleChange = (event) => {
+        
         let formData = { ...this.state.data }
         formData[event.target.name] = event.target.value
         this.setState({
@@ -44,7 +45,7 @@ class ModalLayer extends Component {
                                     <b>Name</b>
                                 </Form.Label>
                                 <Col sm={8}>
-                                    <Form.Control type="text" name="name" onChange={this.handleChange} />
+                                    <Form.Control type="text" name="name" onChange={this.handleChange} required/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
@@ -52,7 +53,7 @@ class ModalLayer extends Component {
                                     <b>Category</b>
                                 </Form.Label>
                                 <Col sm={8}>
-                                    <Form.Control type="text" name="category" onChange={this.handleChange} />
+                                    <Form.Control type="text" name="category" onChange={this.handleChange} required/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
@@ -60,7 +61,7 @@ class ModalLayer extends Component {
                                     <b>Image URL</b>
                                 </Form.Label>
                                 <Col sm={8}>
-                                    <Form.Control type="text" name="url" onChange={this.handleChange} />
+                                    <Form.Control type="text" name="url" onChange={this.handleChange} required/>
                                 </Col>
                             </Form.Group>
                             
@@ -69,8 +70,9 @@ class ModalLayer extends Component {
 
                     <Modal.Footer style={{ border: "none" }}>
                         <Button variant="light" style={{ color: "white", paddingLeft: 30, paddingRight: 30, backgroundColor: "#E28935" }} onClick={() => {
+                            
                             this.props.handle(this.state.data)
-                            this.setState({ showModal: false })
+                            this.setState({ showModal: false, data: {} })
                         }
                         }
                         >Add</Button>

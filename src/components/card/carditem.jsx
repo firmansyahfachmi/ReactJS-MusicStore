@@ -14,7 +14,7 @@ const Carde = (props) => {
         <div className="card-list" >
             {
                 filtered.map(data => (
-                    <Link to={`/detail/${data.name}`} style={{ textDecoration: "none" }}>
+                    <Link to={`/detail/${data.name}`} style={{ textDecoration: "none" }} key={data.id}>
                         <Card style={{ width: '20rem', border: "none", backgroundColor:"whitesmoke"}} className="card1 shadow p-0 mb-3 rounded" key={data.id}>
                             <Card.Img variant="top" src={data.url} alt={data.name} />
                             <Card.Body style={{ backgroundColor: "#F5D372", padding: 15, width: "100%" }}>

@@ -45,9 +45,14 @@ class Home extends Component{
         }
 
     addData = (result) =>{
-        this.state.data.push(result);
+        if (Object.keys(result).length > 0){
+            this.state.data.push(result);
 
-        this.setState({data : this.state.data})
+            this.setState({data : this.state.data})
+        }else{
+            alert("Data harus di isi !!")
+            window.location.reload()
+        }
     }
 
     
@@ -55,10 +60,15 @@ class Home extends Component{
 
 
     render(){
+
         const {data, search} = this.state;
+
+        
+        
         const filtered = data.filter(data =>
             data.name.toLowerCase().includes(search.toLowerCase())
         )
+
         return (
             <Fragment>
                 <div className="search">
@@ -66,7 +76,7 @@ class Home extends Component{
 
                         <div className="input-group col-lg-11 shadow p-0 mb-1 bg-white rounded" style={{ float: "left" }}>
                             <div className="input-group-prepend" >
-                                <div className="input-group-text" style={{ border: 0 }}><i className="fa fa-search"></i></div>
+                                <div className="input-group-text bg-white" style={{ border: 0 }}><i className="fa fa-search"></i></div>
                             </div>
 
                             <Search handleChange={e => this.setState({search:e.target.value})} />
@@ -75,13 +85,13 @@ class Home extends Component{
 
                     </div>
                 </div>
-            <div className="home">
-                <ModalLayer handle={this.addData}/>
+                <div className="home">
+                    <ModalLayer handle={this.addData}/>
 
-                    {(filtered.length > 0) ? <CardHome key={data.id} data={filtered} /> : <h1 style={{ marginTop: 20, textAlign:"center" }} className="alert alert-danger">No Data</h1> }
-                
-                
-            </div>
+                        {(filtered.length > 0) ? <CardHome key={data.id} data={filtered} /> : <h1 style={{ marginTop: 20, textAlign:"center" }} className="alert alert-danger">No Data</h1> }
+                    
+                    
+                </div>
             </Fragment>
         )
     }

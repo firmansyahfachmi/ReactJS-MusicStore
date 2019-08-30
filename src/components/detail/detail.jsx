@@ -38,7 +38,7 @@ class Detail extends Component{
 
     updateData = (result) => {
         this.setState({
-            data: result
+            dataFiltered: result
             
         })
 
@@ -64,7 +64,13 @@ class Detail extends Component{
                             <div style={{float:"right"}}>
                                     <ModalLayer data={data} handle={this.updateData}/>
                                 <Link to={`/item/${data.category}`}>
-                                    <Button variant="danger" title="Delete" onClick={() => this.remove(data.id)}><i className="fa fa-trash" ></i></Button>
+                                    <Button variant="danger" title="Delete" onClick={() => 
+                                    { if(window.confirm("Are you sure want to delete this data ?"))
+                                        {
+                                            this.remove(data.id)
+                                        }
+                                    }
+                                       }><i className="fa fa-trash" ></i></Button>
                                 </Link>
                             </div>
                         </div>

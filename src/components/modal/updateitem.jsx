@@ -34,6 +34,7 @@ class ModalLayer extends Component{
         this.setState({
             data : formData
         });
+        console.log(this.state.data)
         
     };
 
@@ -130,7 +131,7 @@ class ModalLayer extends Component{
                     <Modal.Footer style={{ border: "none" }}>
                         <Button variant="light" style={{ color: "white", paddingLeft: 30, paddingRight: 30, backgroundColor: "#E28935" }} onClick={() => {
                             this.props.handle(this.state.data)
-                            
+                            console.log("dikirim",this.state.data)
                             this.setState({showModal:false})
                         }
                         }
