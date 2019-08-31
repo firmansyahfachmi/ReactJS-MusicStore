@@ -4,15 +4,16 @@ import React, { Component, Fragment} from 'react';
 import ModalLayer from '../modal/modalitem.jsx'
 import CardItem from "../card/carditem.jsx";
 import Search from "../search-bar/search.jsx";
+import { connect } from 'react-redux'
 
-import Datane from "../../data.js";
-
+// import Datane from "../../data.js";
+import { getProducts } from '../../Publics/Redux/Action/musicstore.js'
 
 import './item.css';
 
 class Item extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             data: [],
             search:''
@@ -21,21 +22,24 @@ class Item extends Component {
         
     }
 
-    componentDidMount(){
-        this.setState({data:Datane})
+    componentDidMount = async () =>{
+       await this.props.dispatch(getProducts())
+       this.setState({
+           data:this.props.data.data
+        })
     }
 
 
-    addData = (result) => {
-        if (Object.keys(result).length > 0) {
-            this.state.data.push(result);
+    // addData = (result) => {
+    //     if (Object.keys(result).length > 0) {
+    //         this.state.data.push(result);
 
-            this.setState({ data: this.state.data })
-        } else {
-            alert("Data harus di isi !!")
-            window.location.reload()
-        }
-    }
+    //         this.setState({ data: this.state.data })
+    //     } else {
+    //         alert("Data harus di isi !!")
+    //         window.location.reload()
+    //     }
+    // }
 
 
     render() {
@@ -51,7 +55,7 @@ class Item extends Component {
                 filtered = searched;
             } else{
                 filtered = data.filter(data =>
-                    data.category.toLowerCase().includes(this.props.match.params.category.toLowerCase())
+                    data.category_name.toLowerCase().includes(this.props.match.params.category.toLowerCase())
                 )
             }
         }
@@ -79,7 +83,7 @@ class Item extends Component {
                 </div>
             </div>
             <div className="item">
-                <ModalLayer handle={this.addData}/>
+                <ModalLayer handle={this.addData} data={filtered}/>
 
                 {
                         (filtered.length > 0) ? <CardItem key={this.state.data.id} data={filtered} /> : <h1 style={{ marginTop: 20, textAlign: "center" }} className="alert alert-danger">No Data</h1>
@@ -88,8 +92,16 @@ class Item extends Component {
         </Fragment>
         )
     }
+    
+    
 
 
 }
 
-export default Item;
+const mapStateToProps = state => {
+    return{
+        data:state.musicStore.productsData
+    }
+}
+
+export default connect (mapStateToProps) (Item);

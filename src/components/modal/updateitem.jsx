@@ -56,10 +56,10 @@ class ModalLayer extends Component{
                     </Modal.Header>
 
                     <Modal.Body className="p-5">
-                        <Form ref="form">
+                        <Form ref="form" style={{fontWeight:500}}>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Product Name</b>
+                                    Product Name
                                 </Form.Label>
                                 <Col sm={8}>
                                     <Form.Control type="text" defaultValue={temp.name} name="name" onChange={this.handleChange}/>
@@ -67,7 +67,7 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Category</b>
+                                    Category
                                 </Form.Label>
                                 <Col sm={6}>
                                     <Form.Control as="select" name="category" defaultValue={temp.category} onChange={this.handleChange}>
@@ -81,7 +81,7 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Branch</b>
+                                    Branch
                                 </Form.Label>
                                 <Col sm={6}>
                                     <Form.Control as="select" defaultValue={temp.branch} name="branch" onChange={this.handleChange}>
@@ -95,7 +95,7 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Quantity</b>
+                                    Quantity
                                 </Form.Label>
                                 <Col sm={7}>
                                     <Form.Control type="number" name="qty" defaultValue={temp.qty} onChange={this.handleChange}/>
@@ -103,7 +103,7 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Price</b>
+                                    Price
                                 </Form.Label>
                                 <Col sm={7}>
                                     <Form.Control type="number" name="price" defaultValue={temp.price} onChange={this.handleChange}/>
@@ -111,7 +111,7 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Description</b>
+                                    Description
                                 </Form.Label>
                                 <Col sm={7}>
                                     <Form.Control as="textarea" name="desc" defaultValue={temp.desc} onChange={this.handleChange}/>
@@ -119,7 +119,7 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Image URL</b>
+                                    Image URL
                                 </Form.Label>
                                 <Col sm={7}>
                                     <Form.Control type="text" name="url" defaultValue={temp.url} onChange={this.handleChange}/>

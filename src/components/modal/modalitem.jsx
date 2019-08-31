@@ -38,10 +38,10 @@ class ModalLayer extends Component{
                     </Modal.Header>
 
                     <Modal.Body className="p-5">
-                        <Form ref="form">
+                        <Form ref="form" style={{ fontWeight: 500 }}>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Product Name</b>
+                                    Product Name
                                 </Form.Label>
                                 <Col sm={8}>
                                     <Form.Control type="text" name="name" onChange={this.handleChange}/>
@@ -49,21 +49,18 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Category</b>
+                                    Category
                                 </Form.Label>
                                 <Col sm={6}>
                                     <Form.Control as="select" name="category" onChange={this.handleChange}>
                                         <option>---</option>
-                                        <option>Violin</option>
-                                        <option>Guitar</option>
-                                        <option>Bass</option>
-                                        <option>Harp</option>
+                                        <option></option>
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Branch</b>
+                                    Branch
                                 </Form.Label>
                                 <Col sm={6}>
                                     <Form.Control as="select" name="branch" onChange={this.handleChange}>
@@ -77,7 +74,7 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Quantity</b>
+                                    Quantity
                                 </Form.Label>
                                 <Col sm={7}>
                                     <Form.Control type="number" name="qty" onChange={this.handleChange}/>
@@ -85,7 +82,7 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Price</b>
+                                    Price
                                 </Form.Label>
                                 <Col sm={7}>
                                     <Form.Control type="number" name="price" onChange={this.handleChange}/>
@@ -93,7 +90,7 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Description</b>
+                                    Description
                                 </Form.Label>
                                 <Col sm={7}>
                                     <Form.Control as="textarea" name="desc" onChange={this.handleChange}/>
@@ -101,7 +98,7 @@ class ModalLayer extends Component{
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Image URL</b>
+                                    Image URL
                                 </Form.Label>
                                 <Col sm={7}>
                                     <Form.Control type="text" name="url" onChange={this.handleChange}/>

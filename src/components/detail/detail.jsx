@@ -1,16 +1,19 @@
 import React ,{Component, Fragment} from 'react'
-import {Button, Col, Row, Form} from 'react-bootstrap';
+import {Button, Col, Row, Form, Badge} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux'
 
 import ModalLayer from '../modal/updateitem.jsx';
 
-import Datane from "../../data.js";
+// import Datane from "../../data.js";
+
+import {getProducts} from '../../Publics/Redux/Action/musicstore.js'
 
 import './detail.css'
 
 class Detail extends Component{
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
         this.state = {
             data: [],
             dataFiltered: []
@@ -18,7 +21,11 @@ class Detail extends Component{
     }
 
     componentDidMount = async () => {
-        await this.setState({ data: Datane })
+        await this.props.dispatch(getProducts())
+        
+        this.setState({
+            data:this.props.data.data
+        })
 
         const filtered = this.state.data.filter(data =>
             data.name.toLowerCase().includes(this.props.match.params.name.toLowerCase())
@@ -48,7 +55,6 @@ class Detail extends Component{
     
 
     render(){ 
-
         let data = this.state.dataFiltered;
         return(
             <Fragment>
@@ -60,10 +66,10 @@ class Detail extends Component{
                     </div>
                     <div className="detailed col-md-9">
                         <div className="detailHead">
-                            <h3 className="title">{data.name}</h3>
+                            <h3 className="title">{data.name} </h3>
                             <div style={{float:"right"}}>
                                     <ModalLayer data={data} handle={this.updateData}/>
-                                <Link to={`/item/${data.category}`}>
+                                <Link to={`/item/${data.category_name}`}>
                                     <Button variant="danger" title="Delete" onClick={() => 
                                     { if(window.confirm("Are you sure want to delete this data ?"))
                                         {
@@ -75,16 +81,22 @@ class Detail extends Component{
                             </div>
                         </div>
                         <div className="detailBody">
-                            <p>{data.desc}</p>
+                            <p>{data.description}</p>
                         </div>
                         <div className="detailFoot">
+                            <Row style={{ margin: 5 }} >
+                                <Col style={{ margin: "auto", padding: "auto", fontWeight: 500 }} >Status</Col>
+                                <Col className="col-lg-8"><h4>{(data.quantity > 0 ?
+                                    <Badge variant="success">Available</Badge> : <Badge variant="danger">Not Available</Badge>
+                                )}</h4></Col>
+                            </Row>
                             <Row style={{margin:5}} >
-                                <Col style={{ margin: "auto", padding: "auto", fontWeight:500 }} >Available</Col>
-                                <Col className="col-lg-8"><Form.Control value={data.branch} disabled/></Col>
+                                <Col style={{ margin: "auto", padding: "auto", fontWeight:500 }} >Branch</Col>
+                                <Col className="col-lg-8"><Form.Control value={data.branch_name} disabled/></Col>
                             </Row>
                             <Row style={{ margin: 5 }}>
                                 <Col style={{ margin: "auto", padding: "auto", fontWeight: 500  }}>Quantity</Col>
-                                   <Col className="col-lg-8"><Form.Control value={data.qty} disabled/></Col>
+                                   <Col className="col-lg-8"><Form.Control value={data.quantity} disabled/></Col>
                             </Row>
                             <Row style={{ margin: 5 }}>
                                 <Col style={{ margin: "auto", padding: "auto", fontWeight: 500  }}>Price</Col>
@@ -101,4 +113,10 @@ class Detail extends Component{
 
 }
 
-export default Detail;
+const mapStateToProps = state => {
+    return{
+        data:state.musicStore.detailData
+    }
+}
+
+export default connect (mapStateToProps) (Detail);

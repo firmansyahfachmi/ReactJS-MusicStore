@@ -39,18 +39,10 @@ class ModalLayer extends Component {
                     </Modal.Header>
 
                     <Modal.Body className="p-5">
-                        <Form ref="form">
+                        <Form ref="form" style={{ fontWeight: 500 }}>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Name</b>
-                                </Form.Label>
-                                <Col sm={8}>
-                                    <Form.Control type="text" name="name" onChange={this.handleChange} required/>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group as={Form.Row}>
-                                <Form.Label column sm={2}>
-                                    <b>Category</b>
+                                    Name
                                 </Form.Label>
                                 <Col sm={8}>
                                     <Form.Control type="text" name="category" onChange={this.handleChange} required/>
@@ -58,7 +50,7 @@ class ModalLayer extends Component {
                             </Form.Group>
                             <Form.Group as={Form.Row}>
                                 <Form.Label column sm={2}>
-                                    <b>Image URL</b>
+                                    Image URL
                                 </Form.Label>
                                 <Col sm={8}>
                                     <Form.Control type="text" name="url" onChange={this.handleChange} required/>
