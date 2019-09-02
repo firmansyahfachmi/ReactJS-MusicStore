@@ -27,6 +27,7 @@ class Home extends Component{
         if (Object.keys(result).length > 0){
 
             this.props.dispatch(postCategory(result))
+            window.location.reload()
         }else{
             alert("Data must be filled !!")
             window.location.reload()
@@ -64,7 +65,7 @@ class Home extends Component{
                 <div className="home">
                     <ModalLayer handle={this.addData}/>
 
-                    {(data.length > 0) ? <CardHome key={data.id} data={data} /> : <h1 style={{ marginTop: 20, textAlign:"center" }} className="alert alert-danger">No Data</h1> }
+                    {(data.length > 0) ? <CardHome data={data} /> : <h1 style={{ marginTop: 20, textAlign:"center" }} className="alert alert-danger">No Data</h1> }
                     
                     
                 </div>

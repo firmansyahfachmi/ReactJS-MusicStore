@@ -6,7 +6,7 @@ const Search = ({handleChange}) =>(
    
         <Fragment>
         <input type="search" className="form-control" style={{ border: 0 }} placeholder="Search..." 
-            onChange={handleChange}/>
+            onKeyPress={handleChange}/>
         </Fragment>
     
 )

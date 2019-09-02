@@ -14,10 +14,24 @@ export const getBranch= () => {
     }
 }
 
-export const getProducts = () =>{
+export const getProducts = (category, search) =>{
+    let url = ``;
+    if(search !== null && search !== undefined){
+        url = `http://localhost:4000/anekamusik/products/search/${search}`;
+    }else{
+        url = `http://localhost:4000/anekamusik/products/${category}`;
+    }
+
     return{
         type: 'GET_PRODUCTS',
-        payload: Axios.get(`http://localhost:4000/anekamusik/products`)
+        payload: Axios.get(url)
+    }
+}
+
+export const getProductsDetail = (name) => {
+    return {
+        type: 'GET_PRODUCTS_DETAIL',
+        payload: Axios.get(`http://localhost:4000/anekamusik/products/detail/${name}`)
     }
 }
 
@@ -44,6 +58,7 @@ export const updateProducts = (id) => {
 }
 
 export const deleteProducts = (id) => {
+    
     return {
         type: 'DELETE_PRODUCTS',
         payload: Axios.delete(`http://localhost:4000/anekamusik/products/${id}`)

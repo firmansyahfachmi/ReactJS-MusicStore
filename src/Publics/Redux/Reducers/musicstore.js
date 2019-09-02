@@ -3,7 +3,7 @@ const initialState = {
     productsData: [],
     branchData:[],
     detailData: [],
-    searchData:[],
+    // searchData:[],
     isLoading: false,
     isFulfilled: false,
     isRejected: false,
@@ -70,9 +70,28 @@ const storeMusic = (state = initialState, action) => {
                 isLoading: false,
                 isFulfilled: true,
                 productsData: action.payload.data.data,
-                detailData: action.payload.data.data,
-                searchData: action.payload.data.data
+
             };
+        case 'GET_PRODUCTS_DETAIL_PENDING':
+        return {
+            ...state,
+            isLoading: true,
+            isRejected: false,
+            isFulfilled: false,
+        };
+        case 'GET_PRODUCTS_DETAIL_REJECTED':
+        return {
+            ...state,
+            isLoading: false,
+            isRejected: true,
+        };
+        case 'GET_PRODUCTS_DETAIL_FULFILLED':
+        return {
+            ...state,
+            isLoading: false,
+            isFulfilled: true,
+            detailData: action.payload.data.data
+        };
         case 'POST_CATEGORY_PENDING':
             return {
                 ...state,

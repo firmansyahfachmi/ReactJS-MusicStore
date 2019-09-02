@@ -10,6 +10,7 @@ const Carde = (props) => {
         data.category_name.toLowerCase().includes(data.category_name.toLowerCase())
     )
     
+    console.log("asd",props.data)
     return (
         <div className="card-list" >
             {

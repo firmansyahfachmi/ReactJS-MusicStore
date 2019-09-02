@@ -18,28 +18,33 @@ class Item extends Component {
             data: [],
             category: [],
             branch: [],
-            search:''
+            search:'',
+            param: ''
             
         }
         
     }
 
-    componentDidMount = async () =>{
-        this.props.dispatch(getProducts())
+    
+
+    componentDidMount = async () =>{ 
+        let param = this.props.match.params.category || 'all'
+
+        await this.props.dispatch(getProducts(param, null))
             .then(res => {
                 this.setState({
                     data: this.props.data
                 })
             })
         
-        this.props.dispatch(getCategory())
+        await this.props.dispatch(getCategory())
             .then(res => {
                 this.setState({
                     category: this.props.categories
                 })
             })
 
-        this.props.dispatch(getBranch())
+        await this.props.dispatch(getBranch())
             .then(res => {
                 this.setState({
                     branch: this.props.branches
@@ -61,31 +66,9 @@ class Item extends Component {
 
 
     render() {
-        let filtered ='';
-        const { data, search } = this.state;
-    
+        // let filtered ='';
+        const {data} = this.state;
 
-        if(this.props.match.params.category){
-            if(this.props.match.params.category === 'all'){
-                const searched= data.filter(data =>
-                    data.name.toLowerCase().includes(search.toLowerCase())
-
-                )
-                filtered = searched;
-            } else{
-                filtered = data.filter(data =>
-                    data.category_name.toLowerCase().includes(this.props.match.params.category.toLowerCase())
-                )
-
-                // const searched = filter.filter(data =>
-                //     data.name.toLowerCase().includes(search.toLowerCase())
-
-                // )
-                // filtered = searched;
-
-                
-            }
-        }
 
         // filtered = data.filter(data =>
         //     data.name.toLowerCase().includes(search.toLowerCase())
@@ -103,7 +86,21 @@ class Item extends Component {
                                 <div className="input-group-text bg-white" style={{ border: 0 }}><i className="fa fa-search"></i></div>
                         </div>
 
-                        <Search handleChange={e => this.setState({ search: e.target.value })} />
+                        <Search handleChange={e => { 
+                            let param = this.props.match.params.category
+                            if(e.key === 'Enter'){
+                                this.setState({ 
+                                    search: e.target.value 
+                                })
+                                this.props.dispatch(getProducts(param, this.state.search))
+                                    .then(res => {
+                                        this.setState({
+                                            data: this.props.data
+                                        })
+                                    })
+                            }
+                            }
+                        } />
                     </div>
                     <button className="btn btn-light shadow" style={{ float: "right", position: "absolute", right: 55 }}><i className="fa fa-gear"></i></button>
 
@@ -113,7 +110,7 @@ class Item extends Component {
                 <ModalLayer handle={this.addData} category={this.state.category} branch={this.state.branch}/>
 
                 {
-                        (filtered.length > 0) ? <CardItem key={this.state.data.id} data={filtered} /> : <h1 style={{ marginTop: 20, textAlign: "center" }} className="alert alert-danger">No Data</h1>
+                        (data.length > 0) ? <CardItem data={data} /> : <h1 style={{ marginTop: 20, textAlign: "center" }} className="alert alert-danger">No Data</h1>
                 }
         </div>
         </Fragment>

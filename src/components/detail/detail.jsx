@@ -7,7 +7,7 @@ import ModalLayer from '../modal/updateitem.jsx';
 
 // import Datane from "../../data.js";
 
-import {getProducts, deleteProducts} from '../../Publics/Redux/Action/musicstore.js'
+import {deleteProducts, getProductsDetail} from '../../Publics/Redux/Action/musicstore.js'
 
 import './detail.css'
 
@@ -21,14 +21,15 @@ class Detail extends Component{
     }
 
     componentDidMount = async () => {
-        await this.props.dispatch(getProducts())
+        let param = this.props.match.params.name;
+        await this.props.dispatch(getProductsDetail(param))
         
         this.setState({
             data:this.props.data
         })
 
         const filtered = this.state.data.filter(data =>
-            data.name.toLowerCase().includes(this.props.match.params.name.toLowerCase())
+            data.name.toLowerCase().includes(param.toLowerCase())
         )
 
         this.setState({ dataFiltered: filtered[0] })
@@ -49,6 +50,7 @@ class Detail extends Component{
     
 
     render(){ 
+        console.log(this.props)
         let data = this.state.dataFiltered;
         return(
             <Fragment>
