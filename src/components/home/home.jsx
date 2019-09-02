@@ -5,7 +5,7 @@ import ModalLayer from '../modal/modalHome.jsx'
 import CardHome from "../card/cardHome.jsx";
 import Search from "../search-bar/search.jsx";
 
-import {getCategory, addCategory} from '../../Publics/Redux/Action/musicstore.js'
+import {getCategory, postCategory} from '../../Publics/Redux/Action/musicstore.js'
 
 import './home.css';
 
@@ -18,18 +18,17 @@ class Home extends Component{
     componentDidMount = async () => {
         await this.props.dispatch(getCategory())
         this.setState({
-            data: this.props.data.data
+            data: this.props.data
         })
     } 
 
 
     addData = (result) =>{
-        console.log(result)
         if (Object.keys(result).length > 0){
 
-            this.props.dispatch(addCategory(result))
+            this.props.dispatch(postCategory(result))
         }else{
-            alert("Data harus di isi !!")
+            alert("Data must be filled !!")
             window.location.reload()
         }
     }

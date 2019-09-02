@@ -7,7 +7,7 @@ import Search from "../search-bar/search.jsx";
 import { connect } from 'react-redux'
 
 // import Datane from "../../data.js";
-import { getProducts } from '../../Publics/Redux/Action/musicstore.js'
+import { getProducts, getCategory, getBranch, postProducts } from '../../Publics/Redux/Action/musicstore.js'
 
 import './item.css';
 
@@ -16,6 +16,8 @@ class Item extends Component {
         super();
         this.state = {
             data: [],
+            category: [],
+            branch: [],
             search:''
             
         }
@@ -23,28 +25,45 @@ class Item extends Component {
     }
 
     componentDidMount = async () =>{
-       await this.props.dispatch(getProducts())
-       this.setState({
-           data:this.props.data.data
-        })
+        this.props.dispatch(getProducts())
+            .then(res => {
+                this.setState({
+                    data: this.props.data
+                })
+            })
+        
+        this.props.dispatch(getCategory())
+            .then(res => {
+                this.setState({
+                    category: this.props.categories
+                })
+            })
+
+        this.props.dispatch(getBranch())
+            .then(res => {
+                this.setState({
+                    branch: this.props.branches
+                })
+            })
     }
 
 
-    // addData = (result) => {
-    //     if (Object.keys(result).length > 0) {
-    //         this.state.data.push(result);
+    addData = (result) => {
+        if (Object.keys(result).length > 0) {
 
-    //         this.setState({ data: this.state.data })
-    //     } else {
-    //         alert("Data harus di isi !!")
-    //         window.location.reload()
-    //     }
-    // }
+            this.props.dispatch(postProducts(result))
+            window.location.reload()
+        } else {
+            alert("Data must be filled !!")
+            window.location.reload()
+        }
+    }
 
 
     render() {
         let filtered ='';
         const { data, search } = this.state;
+    
 
         if(this.props.match.params.category){
             if(this.props.match.params.category === 'all'){
@@ -57,6 +76,14 @@ class Item extends Component {
                 filtered = data.filter(data =>
                     data.category_name.toLowerCase().includes(this.props.match.params.category.toLowerCase())
                 )
+
+                // const searched = filter.filter(data =>
+                //     data.name.toLowerCase().includes(search.toLowerCase())
+
+                // )
+                // filtered = searched;
+
+                
             }
         }
 
@@ -83,7 +110,7 @@ class Item extends Component {
                 </div>
             </div>
             <div className="item">
-                <ModalLayer handle={this.addData} data={filtered}/>
+                <ModalLayer handle={this.addData} category={this.state.category} branch={this.state.branch}/>
 
                 {
                         (filtered.length > 0) ? <CardItem key={this.state.data.id} data={filtered} /> : <h1 style={{ marginTop: 20, textAlign: "center" }} className="alert alert-danger">No Data</h1>
@@ -100,8 +127,11 @@ class Item extends Component {
 
 const mapStateToProps = state => {
     return{
-        data:state.musicStore.productsData
+        data:state.musicStore.productsData,
+        categories:state.musicStore.categoryData,
+        branches:state.musicStore.branchData
     }
 }
+
 
 export default connect (mapStateToProps) (Item);

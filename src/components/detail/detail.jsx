@@ -7,7 +7,7 @@ import ModalLayer from '../modal/updateitem.jsx';
 
 // import Datane from "../../data.js";
 
-import {getProducts} from '../../Publics/Redux/Action/musicstore.js'
+import {getProducts, deleteProducts} from '../../Publics/Redux/Action/musicstore.js'
 
 import './detail.css'
 
@@ -24,7 +24,7 @@ class Detail extends Component{
         await this.props.dispatch(getProducts())
         
         this.setState({
-            data:this.props.data.data
+            data:this.props.data
         })
 
         const filtered = this.state.data.filter(data =>
@@ -35,12 +35,7 @@ class Detail extends Component{
     }
 
     remove = (i) => {
-        let index = this.state.data.findIndex(data =>{
-            return data.id === i;
-        })
-        this.state.data.splice(index, 1);
-        this.setState({ data: this.state.data });
-        
+        this.props.dispatch(deleteProducts(i))
     }
 
     updateData = (result) => {
@@ -51,7 +46,6 @@ class Detail extends Component{
 
 
     }
-
     
 
     render(){ 

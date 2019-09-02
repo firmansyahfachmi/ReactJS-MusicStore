@@ -6,13 +6,16 @@ import {Modal, Button, Form, Col} from 'react-bootstrap'
 class ModalLayer extends Component{
     constructor(props){
         super(props);
+
         this.state = {
             showModal: false,
             data : {
                 
             }
         }
+        
     }
+
 
     handleChange = ( event ) => {
         let formData = {...this.state.data}
@@ -26,7 +29,6 @@ class ModalLayer extends Component{
     handleShow = () => this.setState({ showModal: true });
 
     render(){
-
         return (
             <Fragment>
                 
@@ -54,7 +56,10 @@ class ModalLayer extends Component{
                                 <Col sm={6}>
                                     <Form.Control as="select" name="category" onChange={this.handleChange}>
                                         <option>---</option>
-                                        <option></option>
+                                        {this.props.category.map(data => (
+                                            <option value={data.id}>{data.category_name}</option>
+                                        ))
+                                        }
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
@@ -65,10 +70,10 @@ class ModalLayer extends Component{
                                 <Col sm={6}>
                                     <Form.Control as="select" name="branch" onChange={this.handleChange}>
                                         <option>---</option>
-                                        <option>Jakarta</option>
-                                        <option>Malang</option>
-                                        <option>Jogjakarta</option>
-                                        <option>Surabaya</option>
+                                        {this.props.branch.map(data => (
+                                            <option value={data.id}>{data.branch_name}</option>
+                                        ))
+                                        }
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
@@ -77,7 +82,7 @@ class ModalLayer extends Component{
                                     Quantity
                                 </Form.Label>
                                 <Col sm={7}>
-                                    <Form.Control type="number" name="qty" onChange={this.handleChange}/>
+                                    <Form.Control type="number" name="quantity" onChange={this.handleChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
@@ -93,7 +98,7 @@ class ModalLayer extends Component{
                                     Description
                                 </Form.Label>
                                 <Col sm={7}>
-                                    <Form.Control as="textarea" name="desc" onChange={this.handleChange}/>
+                                    <Form.Control as="textarea" name="description" onChange={this.handleChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
@@ -120,5 +125,6 @@ class ModalLayer extends Component{
         );
     }
 }
+
 
 export default ModalLayer;
