@@ -22,7 +22,9 @@ class App extends Component{
         <Route 
           path="/"
           exact
-          component={Home}
+            render={({ history }) => {
+              return <Home history={history} key={window.location.search} />
+            }}
         />
         {/* <Route 
           exact

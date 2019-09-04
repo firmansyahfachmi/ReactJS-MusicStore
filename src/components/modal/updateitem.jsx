@@ -9,21 +9,36 @@ class ModalLayer extends Component{
         this.state = {
             showModal: false,
             data : {
-                name: "",
-                category: "",
-                branch: "",
-                qty: "",
-                price: "",
-                desc: "",
-                url: ""
+                
+            },
+            dropdown: {}
 
-            }
         }
     }
 
     componentDidMount(){
-        const temp = this.props.data;
-        this.setState({ data: temp })
+        const tempo = this.props.dataUpdate.filter(data =>{
+            return data.id === this.props.data.id
+        })
+
+
+        tempo.map(temp =>{
+        return this.setState({ 
+            data: {
+                name: temp.name,
+                category: temp.id_category,
+                branch: temp.id_branch,
+                quantity: temp.quantity,
+                price: temp.price,
+                description: temp.description,
+                url: temp.url
+            },
+            dropdown: this.props.data
+        })
+
+        })
+
+        
     }
     
 
@@ -34,7 +49,6 @@ class ModalLayer extends Component{
         this.setState({
             data : formData
         });
-        console.log(this.state.data)
         
     };
 
@@ -70,12 +84,12 @@ class ModalLayer extends Component{
                                     Category
                                 </Form.Label>
                                 <Col sm={6}>
-                                    <Form.Control as="select" name="category" defaultValue={temp.category} onChange={this.handleChange}>
+                                    <Form.Control as="select" name="category" defaultValue={this.state.data.category} onChange={this.handleChange}>
                                         <option>---</option>
-                                        <option>Violin</option>
-                                        <option>Guitar</option>
-                                        <option>Bass</option>
-                                        <option>Harp</option>
+                                        {this.props.category.map(data => (
+                                            <option value={data.id}>{data.category_name}</option>
+                                        ))
+                                        }
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
@@ -84,12 +98,13 @@ class ModalLayer extends Component{
                                     Branch
                                 </Form.Label>
                                 <Col sm={6}>
-                                    <Form.Control as="select" defaultValue={temp.branch} name="branch" onChange={this.handleChange}>
+                                    
+                                    <Form.Control as="select" name="branch" defaultValue={this.state.data.branch} onChange={this.handleChange}>
                                         <option>---</option>
-                                        <option>Jakarta</option>
-                                        <option>Malang</option>
-                                        <option>Jogjakarta</option>
-                                        <option>Surabaya</option>
+                                        {this.props.branch.map(data => (
+                                            <option value={data.id}>{data.branch_name}</option>
+                                        ))
+                                        }
                                     </Form.Control>
                                 </Col>
                             </Form.Group>
@@ -98,7 +113,7 @@ class ModalLayer extends Component{
                                     Quantity
                                 </Form.Label>
                                 <Col sm={7}>
-                                    <Form.Control type="number" name="qty" defaultValue={temp.qty} onChange={this.handleChange}/>
+                                    <Form.Control type="number" name="quantity" defaultValue={temp.quantity} onChange={this.handleChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
@@ -114,7 +129,7 @@ class ModalLayer extends Component{
                                     Description
                                 </Form.Label>
                                 <Col sm={7}>
-                                    <Form.Control as="textarea" name="desc" defaultValue={temp.desc} onChange={this.handleChange}/>
+                                    <Form.Control as="textarea" name="description" defaultValue={temp.description} onChange={this.handleChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Form.Row}>
@@ -131,7 +146,6 @@ class ModalLayer extends Component{
                     <Modal.Footer style={{ border: "none" }}>
                         <Button variant="light" style={{ color: "white", paddingLeft: 30, paddingRight: 30, backgroundColor: "#E28935" }} onClick={() => {
                             this.props.handle(this.state.data)
-                            console.log("dikirim",this.state.data)
                             this.setState({showModal:false})
                         }
                         }

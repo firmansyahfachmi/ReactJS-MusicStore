@@ -35,6 +35,13 @@ export const getProductsDetail = (name) => {
     }
 }
 
+export const getProductsTable = () => {
+    return {
+        type: 'GET_PRODUCTS_TABLE',
+        payload: Axios.get(`http://localhost:4000/anekamusik/productsTable`)
+    }
+}
+
 
 export const postCategory = (data) =>{
     return{
@@ -50,10 +57,10 @@ export const postProducts = (data) => {
     }
 }
 
-export const updateProducts = (id) => {
+export const updateProducts = (id, data) => {
     return {
         type: 'UPDATE_PRODUCTS',
-        payload: Axios.patch(`http://localhost:4000/anekamusik/products/${id}`)
+        payload: Axios.patch(`http://localhost:4000/anekamusik/products/${id}`, data)
     }
 }
 

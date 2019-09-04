@@ -23,12 +23,14 @@ class ModalLayer extends Component{
         this.setState({
             data : formData
         });
+        console.log(this.state.data)
     };
 
     handleClose = () => this.setState({showModal: false});
     handleShow = () => this.setState({ showModal: true });
 
     render(){
+        console.log("modal item", this.props.branch)
         return (
             <Fragment>
                 
@@ -70,7 +72,8 @@ class ModalLayer extends Component{
                                 <Col sm={6}>
                                     <Form.Control as="select" name="branch" onChange={this.handleChange}>
                                         <option>---</option>
-                                        {this.props.branch.map(data => (
+                                        {
+                                            this.props.branch.map(data => (
                                             <option value={data.id}>{data.branch_name}</option>
                                         ))
                                         }

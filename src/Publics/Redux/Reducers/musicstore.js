@@ -3,7 +3,7 @@ const initialState = {
     productsData: [],
     branchData:[],
     detailData: [],
-    // searchData:[],
+    productsTable: [],
     isLoading: false,
     isFulfilled: false,
     isRejected: false,
@@ -72,6 +72,27 @@ const storeMusic = (state = initialState, action) => {
                 productsData: action.payload.data.data,
 
             };
+        case 'GET_PRODUCTS_TABLE_PENDING':
+            return {
+                ...state,
+                isLoading: true,
+                isRejected: false,
+                isFulfilled: false,
+            };
+        case 'GET_PRODUCTS_TABLE_REJECTED':
+            return {
+                ...state,
+                isLoading: false,
+                isRejected: true,
+            };
+        case 'GET_PRODUCTS_TABLE_FULFILLED':
+            return {
+                ...state,
+                isLoading: false,
+                isFulfilled: true,
+                productsTable: action.payload.data.data,
+
+            };
         case 'GET_PRODUCTS_DETAIL_PENDING':
         return {
             ...state,
@@ -110,7 +131,6 @@ const storeMusic = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 isFulfilled: true,
-                categoryData: action.payload.data.data
             };
         case 'POST_PRODUCTS_PENDING':
             return {
@@ -130,7 +150,6 @@ const storeMusic = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 isFulfilled: true,
-                productsData: action.payload.data.data
             };
         case 'UPDATE_PRODUCTS_PENDING':
             return {
@@ -150,7 +169,6 @@ const storeMusic = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 isFulfilled: true,
-                productsData: action.payload.data.data
             };
         case 'DELETE_PRODUCTS_PENDING':
             return {
@@ -166,14 +184,17 @@ const storeMusic = (state = initialState, action) => {
                 isRejected: true,
             };
         case 'DELETE_PRODUCTS_FULFILLED':
+            let filter = state.productsData.findIndex(products => {
+               return products.id === action.payload.data.data.id
+            
+            })
+            let deleted = state.productsData.splice(filter, 1);
+
             return {
                 ...state,
                 isLoading: false,
                 isFulfilled: true,
-                // productsData: state.productsData.filter(products => {
-                //     let index = products.id !== action.payload.data.data.id
-                //     state.products.splice(index,1)
-                // })
+                productsData: deleted
 
             };
 
