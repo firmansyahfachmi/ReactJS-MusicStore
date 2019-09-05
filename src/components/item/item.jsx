@@ -3,7 +3,7 @@ import {Pagination} from 'react-bootstrap'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 
-import { getProducts, getCategory, getBranch, postProducts } from '../../Publics/Redux/Action/musicstore.js'
+import { getProducts,  postProducts } from '../../Publics/Redux/Action/musicstore.js'
  
 import ModalLayer from '../modal/modalitem.jsx'
 import CardItem from "../card/carditem.jsx";
@@ -17,11 +17,9 @@ class Item extends Component {
         super();
         this.state = {
             data: [],
-            category: [],
-            branch: [],
             search:'',
-            limit: 8,
-            page: 2
+            page: 1,
+            totalPage: 0
             
         }
         
@@ -36,28 +34,14 @@ class Item extends Component {
         const search = urlParams.get('search') || null; //Mengambil data query.params
         
         //Memanggil data dari products dan juga digunakan untuk Function search
-        await this.props.dispatch(getProducts(param, search))
+        await this.props.dispatch(getProducts(param, search, this.state.page))
             .then(res => {
                 this.setState({
                     data: this.props.data
                 })
             })
         
-        //Memanggil data dari Category
-        await this.props.dispatch(getCategory())
-            .then(res => {
-                this.setState({
-                    category: this.props.categories
-                })
-            })
-
-        //Memanggil data dari Branch
-        await this.props.dispatch(getBranch())
-            .then(res => {
-                this.setState({
-                    branch: this.props.branches
-                })
-            })
+        
     }
 
     // Function tambah data products
@@ -74,8 +58,17 @@ class Item extends Component {
                 type: 'success',
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#E28935'
-            }).then(() => {
-                window.location.reload();
+            }).then( async () => {
+                let param = this.props.match.params.category || 'all' 
+                const urlParams = new URLSearchParams(window.location.search); 
+                const search = urlParams.get('search') || null;
+
+                await this.props.dispatch(getProducts(param, search, this.state.page))
+                    .then(res => {
+                        this.setState({
+                            data: this.props.data
+                        })
+                    })
             })
             
 
@@ -91,13 +84,49 @@ class Item extends Component {
     }
 
 
+    nextPage = async () => {
+        let param = this.props.match.params.category || 'all'
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const search = urlParams.get('search') || null;
+
+        const maxPaginate = Math.ceil(this.state.data.length / 2);
+
+        if (this.state.page < maxPaginate) {
+            let next = this.state.page + 1;
+            await this.setState({ page: next});
+
+            await this.props.dispatch(getProducts(param, search, this.state.page))
+                .then(res => {
+                    this.setState({
+                        data: this.props.data
+                    })
+                })
+        } 
+    }
+
+    prevPage = async () => {
+        let param = this.props.match.params.category || 'all'
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const search = urlParams.get('search') || null;
+
+        if (this.state.page > 1) {
+            let previous = this.state.page - 1;
+            await this.setState({ page: previous });
+
+            await this.props.dispatch(getProducts(param, search, this.state.page))
+                .then(res => {
+                    this.setState({
+                        data: this.props.data
+                    })
+                })
+        } 
+    }
+
+
     render() {
-        const {data, limit ,page} = this.state;
-
-        const totalPages = Math.ceil(this.state.data.length / limit)
-        const pages =  totalPages + 1
-
-        console.log("as",pages)
+        const {data} = this.state;
 
         return (
             <Fragment>
@@ -143,10 +172,8 @@ class Item extends Component {
 
             <div className="item">
 
-                {/* Memanggil Component Modal untuk tambah data, dan membawa data dari category dan branch */
-                        console.log("item ", this.state.branch)
-                }
-                <ModalLayer handle={this.addData} category={this.state.category} branch={this.state.branch}/>
+                {/* Memanggil Component Modal untuk tambah data, dan membawa data dari category dan branch */}
+                <ModalLayer handle={this.addData}/>
 
                 {   
                     //Memvalidasi data yang akan ditampilkan
@@ -158,16 +185,17 @@ class Item extends Component {
                         <h1 style={{ marginTop: 20, textAlign: "center" }} className="alert alert-danger">No Data</h1>
                 }
             </div>
-                <div style={{ position: 'absolute', bottom: 30, left: '50%', marginLeft: '-50px' }}>
-
+                <div style={{ position: 'absolute', bottom: 30, left: '50%', marginLeft: '-50px', display:'flex' }}>
                     {
                         
-                        (pages.length > 1) ?
-                            <Pagination className="shadow-lg">
-                                {pages.map(num => (
-                                    <Pagination.Item key={num} active={num === page}>{num}</Pagination.Item>
-                                ))
-                                }
+                        (this.state.data.length > 0) ?
+                            <Pagination className="shadow-lg" variant="info">
+                                <Pagination.Prev onClick={this.prevPage}/>
+                                {/* {data.map(num => ( */}
+                                    {/* <Pagination.Item key="1" active>1</Pagination.Item> */}
+                                {/* )) */}
+                                {/* } */}
+                                <Pagination.Next onClick={this.nextPage}/>
                             </Pagination> 
                         : <span></span>
                     }
@@ -186,8 +214,7 @@ class Item extends Component {
 const mapStateToProps = state => {
     return{
         data:state.musicStore.productsData,
-        categories:state.musicStore.categoryData,
-        branches:state.musicStore.branchData
+        
     }
 }
 

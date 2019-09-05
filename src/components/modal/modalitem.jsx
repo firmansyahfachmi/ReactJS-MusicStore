@@ -1,5 +1,7 @@
 import React, {Fragment, Component} from 'react';
 import {Modal, Button, Form, Col} from 'react-bootstrap'
+import { connect } from 'react-redux'
+import { getCategory, getBranch } from '../../Publics/Redux/Action/musicstore.js'
 
 // import '.'
 
@@ -11,9 +13,29 @@ class ModalLayer extends Component{
             showModal: false,
             data : {
                 
-            }
+            },
+            branch : [],
+            category: []
         }
         
+    }
+
+    componentDidMount = async () => {
+        //Memanggil data dari Category
+        await this.props.dispatch(getCategory())
+            .then(res => {
+                this.setState({
+                    category: this.props.categories
+                })
+            })
+
+        // //Memanggil data dari Branch
+        await this.props.dispatch(getBranch())
+            .then(res => {
+                this.setState({
+                    branch: this.props.branches
+                })
+            })
     }
 
 
@@ -30,7 +52,6 @@ class ModalLayer extends Component{
     handleShow = () => this.setState({ showModal: true });
 
     render(){
-        console.log("modal item", this.props.branch)
         return (
             <Fragment>
                 
@@ -58,7 +79,7 @@ class ModalLayer extends Component{
                                 <Col sm={6}>
                                     <Form.Control as="select" name="category" onChange={this.handleChange}>
                                         <option>---</option>
-                                        {this.props.category.map(data => (
+                                        {this.state.category.map(data => (
                                             <option value={data.id}>{data.category_name}</option>
                                         ))
                                         }
@@ -73,7 +94,7 @@ class ModalLayer extends Component{
                                     <Form.Control as="select" name="branch" onChange={this.handleChange}>
                                         <option>---</option>
                                         {
-                                            this.props.branch.map(data => (
+                                            this.state.branch.map(data => (
                                             <option value={data.id}>{data.branch_name}</option>
                                         ))
                                         }
@@ -129,5 +150,12 @@ class ModalLayer extends Component{
     }
 }
 
+const mapStateToProps = state => {
+    return{
+        categories: state.musicStore.categoryData,
+        branches: state.musicStore.branchData
+    }
+}
 
-export default ModalLayer;
+
+export default connect (mapStateToProps) (ModalLayer);

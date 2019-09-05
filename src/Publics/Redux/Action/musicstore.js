@@ -14,12 +14,12 @@ export const getBranch= () => {
     }
 }
 
-export const getProducts = (category, search) =>{
+export const getProducts = (category, search, page) =>{
     let url = ``;
     if(search !== null && search !== undefined){
-        url = `http://localhost:4000/anekamusik/products/search/${search}`;
+        url = `http://localhost:4000/anekamusik/products/search/${search}?page=${page}`;
     }else{
-        url = `http://localhost:4000/anekamusik/products/${category}`;
+        url = `http://localhost:4000/anekamusik/products/${category}?page=${page}`;
     }
 
     return{

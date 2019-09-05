@@ -87,7 +87,7 @@ class Detail extends Component{
             confirmButtonText: 'OK',
             confirmButtonColor: '#E28935'
         }).then(() => {
-            window.location.reload();
+            window.location.href = `/detail/${result.name}`;
         })
 
     }

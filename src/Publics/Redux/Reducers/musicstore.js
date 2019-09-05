@@ -11,6 +11,8 @@ const initialState = {
 
 const storeMusic = (state = initialState, action) => {
     switch (action.type) {
+
+        //GET CATEGORY///////////////////////////////////////////////////////////////////////////////
         case 'GET_CATEGORY_PENDING':
             return {
                 ...state,
@@ -31,6 +33,8 @@ const storeMusic = (state = initialState, action) => {
                 isFulfilled: true,
                 categoryData: action.payload.data.data,
             };
+            
+        //GET BRANCH///////////////////////////////////////////////////////////////////////////////
         case 'GET_BRANCH_PENDING':
             return {
                 ...state,
@@ -51,6 +55,8 @@ const storeMusic = (state = initialState, action) => {
                 isFulfilled: true,
                 branchData: action.payload.data.data,
             };
+
+        //GET PRODUCTS///////////////////////////////////////////////////////////////////////////////
         case 'GET_PRODUCTS_PENDING':
             return {
                 ...state,
@@ -72,6 +78,8 @@ const storeMusic = (state = initialState, action) => {
                 productsData: action.payload.data.data,
 
             };
+
+        //GET PRODUCTS TABLE///////////////////////////////////////////////////////////////////////////////
         case 'GET_PRODUCTS_TABLE_PENDING':
             return {
                 ...state,
@@ -93,26 +101,30 @@ const storeMusic = (state = initialState, action) => {
                 productsTable: action.payload.data.data,
 
             };
+
+        //GET PRODUCTS DETAIL///////////////////////////////////////////////////////////////////////////////
         case 'GET_PRODUCTS_DETAIL_PENDING':
-        return {
-            ...state,
-            isLoading: true,
-            isRejected: false,
-            isFulfilled: false,
-        };
+            return {
+                ...state,
+                isLoading: true,
+                isRejected: false,
+                isFulfilled: false,
+            };
         case 'GET_PRODUCTS_DETAIL_REJECTED':
-        return {
-            ...state,
-            isLoading: false,
-            isRejected: true,
-        };
+            return {
+                ...state,
+                isLoading: false,
+                isRejected: true,
+            };
         case 'GET_PRODUCTS_DETAIL_FULFILLED':
-        return {
-            ...state,
-            isLoading: false,
-            isFulfilled: true,
-            detailData: action.payload.data.data
-        };
+            return {
+                ...state,
+                isLoading: false,
+                isFulfilled: true,
+                detailData: action.payload.data.data
+            };
+
+        //POST CATEGORY///////////////////////////////////////////////////////////////////////////////
         case 'POST_CATEGORY_PENDING':
             return {
                 ...state,
@@ -132,6 +144,8 @@ const storeMusic = (state = initialState, action) => {
                 isLoading: false,
                 isFulfilled: true,
             };
+
+        //POST PRODUCTS///////////////////////////////////////////////////////////////////////////////
         case 'POST_PRODUCTS_PENDING':
             return {
                 ...state,
@@ -151,6 +165,8 @@ const storeMusic = (state = initialState, action) => {
                 isLoading: false,
                 isFulfilled: true,
             };
+        
+        //UPDATE PRODUCTS///////////////////////////////////////////////////////////////////////////////
         case 'UPDATE_PRODUCTS_PENDING':
             return {
                 ...state,
@@ -170,6 +186,8 @@ const storeMusic = (state = initialState, action) => {
                 isLoading: false,
                 isFulfilled: true,
             };
+
+        //DELETE PRODUCTS///////////////////////////////////////////////////////////////////////////////
         case 'DELETE_PRODUCTS_PENDING':
             return {
                 ...state,

@@ -36,8 +36,11 @@ class Home extends Component{
                 text: `Category ${result.category} has been added`,
                 type: 'success',
                 confirmButtonText: 'OK',
-            }).then( () => {
-                window.location.reload();
+            }).then( async () => {
+                await this.props.dispatch(getCategory())
+                this.setState({
+                    data: this.props.data
+                })
             })
             
         }else{
