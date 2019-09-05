@@ -1,9 +1,11 @@
 import React, {Fragment, Component} from 'react';
 import {Modal, Button, Form, Col} from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { getCategory, getBranch } from '../../Publics/Redux/Action/musicstore.js'
 
-// import '.'
+import { getCategory} from '../../Publics/Redux/Action/category.js'
+
+import {getBranch } from '../../Publics/Redux/Action/branch.js'
+
 
 class ModalLayer extends Component{
     constructor(props){
@@ -152,8 +154,8 @@ class ModalLayer extends Component{
 
 const mapStateToProps = state => {
     return{
-        categories: state.musicStore.categoryData,
-        branches: state.musicStore.branchData
+        categories: state.category.categoryData,
+        branches: state.branch.branchData
     }
 }
 

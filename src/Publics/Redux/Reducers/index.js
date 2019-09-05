@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
-import musicStore from './musicstore.js'
+import branch from './branch.js'
+import category from './category.js'
+import products from './products.js'
 
 const rootReducer = combineReducers({
-    musicStore
+    branch,
+    category,
+    products
 })
 
 export default rootReducer;

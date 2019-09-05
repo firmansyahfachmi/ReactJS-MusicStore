@@ -1,7 +1,5 @@
 const initialState = {
-    categoryData: [],
     productsData: [],
-    branchData:[],
     detailData: [],
     productsTable: [],
     isLoading: false,
@@ -9,52 +7,8 @@ const initialState = {
     isRejected: false,
 };
 
-const storeMusic = (state = initialState, action) => {
+const products = (state = initialState, action) => {
     switch (action.type) {
-
-        //GET CATEGORY///////////////////////////////////////////////////////////////////////////////
-        case 'GET_CATEGORY_PENDING':
-            return {
-                ...state,
-                isLoading: true,
-                isRejected: false,
-                isFulfilled: false,
-            };
-        case 'GET_CATEGORY_REJECTED':
-            return {
-                ...state,
-                isLoading: false,
-                isRejected: true,
-            };
-        case 'GET_CATEGORY_FULFILLED':
-            return {
-                ...state,
-                isLoading: false,
-                isFulfilled: true,
-                categoryData: action.payload.data.data,
-            };
-            
-        //GET BRANCH///////////////////////////////////////////////////////////////////////////////
-        case 'GET_BRANCH_PENDING':
-            return {
-                ...state,
-                isLoading: true,
-                isRejected: false,
-                isFulfilled: false,
-            };
-        case 'GET_BRANCH_REJECTED':
-            return {
-                ...state,
-                isLoading: false,
-                isRejected: true,
-            };
-        case 'GET_BRANCH_FULFILLED':
-            return {
-                ...state,
-                isLoading: false,
-                isFulfilled: true,
-                branchData: action.payload.data.data,
-            };
 
         //GET PRODUCTS///////////////////////////////////////////////////////////////////////////////
         case 'GET_PRODUCTS_PENDING':
@@ -123,28 +77,6 @@ const storeMusic = (state = initialState, action) => {
                 isFulfilled: true,
                 detailData: action.payload.data.data
             };
-
-        //POST CATEGORY///////////////////////////////////////////////////////////////////////////////
-        case 'POST_CATEGORY_PENDING':
-            return {
-                ...state,
-                isLoading: true,
-                isRejected: false,
-                isFulfilled: false,
-            };
-        case 'POST_CATEGORY_REJECTED':
-            return {
-                ...state,
-                isLoading: false,
-                isRejected: true,
-            };
-        case 'POST_CATEGORY_FULFILLED':
-            return {
-                ...state,
-                isLoading: false,
-                isFulfilled: true,
-            };
-
         //POST PRODUCTS///////////////////////////////////////////////////////////////////////////////
         case 'POST_PRODUCTS_PENDING':
             return {
@@ -165,7 +97,7 @@ const storeMusic = (state = initialState, action) => {
                 isLoading: false,
                 isFulfilled: true,
             };
-        
+
         //UPDATE PRODUCTS///////////////////////////////////////////////////////////////////////////////
         case 'UPDATE_PRODUCTS_PENDING':
             return {
@@ -203,8 +135,8 @@ const storeMusic = (state = initialState, action) => {
             };
         case 'DELETE_PRODUCTS_FULFILLED':
             let filter = state.productsData.findIndex(products => {
-               return products.id === action.payload.data.data.id
-            
+                return products.id === action.payload.data.data.id
+
             })
             let deleted = state.productsData.splice(filter, 1);
 
@@ -215,10 +147,9 @@ const storeMusic = (state = initialState, action) => {
                 productsData: deleted
 
             };
-
         default:
             return state;
     }
-};
+}
 
-export default storeMusic;
+export default products;

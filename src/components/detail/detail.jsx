@@ -6,7 +6,11 @@ import Swal from 'sweetalert2'
 
 import ModalLayer from '../modal/updateitem.jsx';
 
-import {deleteProducts, getProductsDetail, getCategory, getBranch, updateProducts, getProductsTable} from '../../Publics/Redux/Action/musicstore.js'
+import {getCategory} from '../../Publics/Redux/Action/category.js'
+
+import {getBranch} from '../../Publics/Redux/Action/branch.js'
+
+import { deleteProducts, getProductsDetail, updateProducts, getProductsTable } from '../../Publics/Redux/Action/products.js'
 
 import './detail.css'
 
@@ -64,7 +68,6 @@ class Detail extends Component{
         )
 
         this.setState({ dataFiltered: filtered[0] }) // Menetapkan dataFiltered
-        console.log("as",this.state.dataFiltered)
     }
 
     //Function delete products
@@ -178,10 +181,10 @@ class Detail extends Component{
 //Memanggil data dari Reducers
 const mapStateToProps = state => {
     return{
-        data:state.musicStore.detailData,
-        products:state.musicStore.productsTable,
-        categories:state.musicStore.categoryData,
-        branches:state.musicStore.branchData
+        data:state.products.detailData,
+        products:state.products.productsTable,
+        categories:state.category.categoryData,
+        branches:state.branch.branchData
     }
 }
 

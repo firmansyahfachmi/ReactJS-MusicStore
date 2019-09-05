@@ -3,7 +3,7 @@ import {Pagination} from 'react-bootstrap'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 
-import { getProducts,  postProducts } from '../../Publics/Redux/Action/musicstore.js'
+import { getProducts,  postProducts } from '../../Publics/Redux/Action/products.js'
  
 import ModalLayer from '../modal/modalitem.jsx'
 import CardItem from "../card/carditem.jsx";
@@ -19,7 +19,6 @@ class Item extends Component {
             data: [],
             search:'',
             page: 1,
-            totalPage: 0
             
         }
         
@@ -42,6 +41,7 @@ class Item extends Component {
             })
         
         
+        
     }
 
     // Function tambah data products
@@ -59,16 +59,16 @@ class Item extends Component {
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#E28935'
             }).then( async () => {
-                let param = this.props.match.params.category || 'all' 
-                const urlParams = new URLSearchParams(window.location.search); 
-                const search = urlParams.get('search') || null;
+                // let param = this.props.match.params.category || 'all' 
+                // const urlParams = new URLSearchParams(window.location.search); 
+                // const search = urlParams.get('search') || null;
 
-                await this.props.dispatch(getProducts(param, search, this.state.page))
-                    .then(res => {
-                        this.setState({
-                            data: this.props.data
-                        })
-                    })
+                // await this.props.dispatch(getProducts(param, search, this.state.page))
+                //     .then(res => {
+                //         this.setState({
+                //             data: this.props.data
+                //         })
+                //     })
             })
             
 
@@ -83,44 +83,40 @@ class Item extends Component {
         }
     }
 
-
-    nextPage = async () => {
+    pageMount = async () => {
         let param = this.props.match.params.category || 'all'
 
         const urlParams = new URLSearchParams(window.location.search);
         const search = urlParams.get('search') || null;
 
+        await this.props.dispatch(getProducts(param, search, this.state.page))
+                .then(res => {
+                    this.setState({
+                        data: this.props.data
+                    })
+                })
+    }
+
+
+    nextPage = async () => {
+        
         const maxPaginate = Math.ceil(this.state.data.length / 2);
 
         if (this.state.page < maxPaginate) {
             let next = this.state.page + 1;
             await this.setState({ page: next});
 
-            await this.props.dispatch(getProducts(param, search, this.state.page))
-                .then(res => {
-                    this.setState({
-                        data: this.props.data
-                    })
-                })
+            this.pageMount()
         } 
     }
 
     prevPage = async () => {
-        let param = this.props.match.params.category || 'all'
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const search = urlParams.get('search') || null;
 
         if (this.state.page > 1) {
             let previous = this.state.page - 1;
             await this.setState({ page: previous });
 
-            await this.props.dispatch(getProducts(param, search, this.state.page))
-                .then(res => {
-                    this.setState({
-                        data: this.props.data
-                    })
-                })
+            this.pageMount()
         } 
     }
 
@@ -213,8 +209,8 @@ class Item extends Component {
 //Memanggil data dari Reducers
 const mapStateToProps = state => {
     return{
-        data:state.musicStore.productsData,
-        
+        data:state.products.productsData,
+        load:state.products.isLoading
     }
 }
 

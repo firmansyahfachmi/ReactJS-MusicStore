@@ -1,11 +1,12 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux'
-import { getCategory, postCategory } from '../../Publics/Redux/Action/musicstore.js'
 import Swal from 'sweetalert2'
 
 import ModalLayer from '../modal/modalHome.jsx'
 import CardHome from "../card/cardHome.jsx";
 import Search from "../search-bar/search.jsx";
+
+import { getCategory, postCategory } from '../../Publics/Redux/Action/category.js'
 
 import './home.css';
 
@@ -37,10 +38,10 @@ class Home extends Component{
                 type: 'success',
                 confirmButtonText: 'OK',
             }).then( async () => {
-                await this.props.dispatch(getCategory())
-                this.setState({
-                    data: this.props.data
-                })
+                // await this.props.dispatch(getCategory())
+                // this.setState({
+                //     data: this.props.data
+                // })
             })
             
         }else{
@@ -118,7 +119,7 @@ class Home extends Component{
                     
                     
                 </div>
-            </Fragment>
+            </Fragment> 
         )
    
 
@@ -130,8 +131,7 @@ class Home extends Component{
 //Memanggil data dari Reducers
 const mapStateToProps = state => {
     return{
-        data:state.musicStore.categoryData,
-        dataProducts:state.musicStore.productsData
+        data:state.category.categoryData,
     }
 }
 
