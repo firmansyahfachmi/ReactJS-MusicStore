@@ -1,21 +1,235 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
-import Logo from './logo.png'
+import React, { Component, Fragment } from "react";
+// import { Link } from "react-router-dom";
+import {
+  Navbar,
+  Nav,
+  Form,
+  FormControl,
+  Button,
+  InputGroup,
+  Row,
+  Col
+  //   ButtonGroup
+} from "react-bootstrap";
+import { withRouter } from "react-router-dom";
+import Logo from "./logo.png";
 
-import './header.css';
+import "./header.css";
+import "./header.css";
 
-const Header = () => {
+class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: ""
+    };
+  }
+
+  loginShow = () => {
+    let x = document.getElementById("login");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+      document.getElementById("over2").style.display = "none";
+    } else {
+      x.style.display = "block";
+      document.getElementById("over2").style.display = "initial";
+    }
+  };
+
+  loginClose = () => {
+    let x = document.getElementById("login");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+      document.getElementById("over2").style.display = "none";
+    }
+  };
+
+  openNav = () => {
+    document.getElementById("Sidepanel").style.width = "300px";
+    document.getElementById("over").style.display = "initial";
+  };
+
+  closeNav = () => {
+    document.getElementById("Sidepanel").style.width = "0";
+    document.getElementById("over").style.display = "none";
+  };
+
+  handleChange = async e => {
+    await this.setState({
+      search: e.target.value
+    });
+  };
+
+  redirect = () => {
+    let searche = this.state.search;
+
+    return this.props.history.push(`/item/search?keyword=${searche} `);
+  };
+
+  render() {
     return (
-        <div className="header shadow">
-            
-            <Link to="/" style={{color:"black"}}>
-            <img src={Logo} alt="logo" style={{width:"180px", position:"absolute", top:-45}}/>
-            <span style={{position:"absolute", left:185, top:25, fontWeight:"500", fontSize:25, letterSpacing:3}}>ANEKA MUSIK</span>
-            </Link>
-          
-            <button className="btn btn-outline-dark" style={{float:"right", marginTop:15,marginRight:30,fontSize:18}}>Login</button>
+      <Fragment>
+        {/* NAVBAR */}
+        <Navbar
+          style={{
+            height: 70,
+            backgroundColor: "#F5D372",
+            overflow: "hidden"
+          }}
+        >
+          <Navbar.Brand href="/">
+            <img
+              src={Logo}
+              alt="logo"
+              style={{
+                width: "150px"
+              }}
+            />
+          </Navbar.Brand>
+          <Form inline className="ml-auto mr-auto col-lg-8">
+            <InputGroup className="col-lg-12">
+              <FormControl
+                type="text"
+                placeholder="Search.."
+                className="border-0"
+                onChange={this.handleChange}
+                onKeyPress={e => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    this.redirect();
+                  }
+                }}
+              />
+              <InputGroup.Append>
+                <Button
+                  variant="light"
+                  style={{ zIndex: 0 }}
+                  onClick={e => {
+                    this.redirect();
+                  }}
+                >
+                  <i className="fa fa-search"></i>
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
+          </Form>
+          <Nav className="col-md-2" style={{ fontSize: 22 }}>
+            <Nav.Link onClick={this.loginShow} className="ml-1">
+              <i className="fa fa-user"></i>
+            </Nav.Link>
+            <Nav.Link href="/wishlist" className="ml-4">
+              <i className="fa fa-heart"></i>
+            </Nav.Link>
+            <Nav.Link onClick={this.openNav} className="ml-4">
+              <i className="fa fa-shopping-cart"></i>
+            </Nav.Link>
+          </Nav>
+        </Navbar>
+        {/* NAVBAR END */}
+
+        {/* CART */}
+        <div id="Sidepanel" className="sidepanel">
+          <div style={{ display: "flex" }} className="topSide">
+            <div>
+              <i className="fa fa-shopping-cart"></i>&nbsp;&nbsp;KERANJANG
+            </div>
+            <Nav.Link href="" className="closebtn" onClick={this.closeNav}>
+              x
+            </Nav.Link>
+          </div>
+          <Row className="ml-3 mr-3 mb-2">
+            <Col className="border-bottom a">KERANJANG KOSONG</Col>
+          </Row>
+          <Row className="total">
+            <Col>
+              <Row style={{ marginBottom: 10 }}>
+                <Col style={{ border: "1px solid black", padding: 6 }}>
+                  Total
+                  <span style={{ float: "right" }}>Rp.</span>
+                </Col>
+              </Row>
+              <Row>
+                <Col style={{ padding: 0 }}>
+                  <a href="/" style={{ textDecoration: "none" }}>
+                    <Button block variant="secondary">
+                      BELANJA SEKARANG
+                    </Button>
+                  </a>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
         </div>
-    )
+        {/* CART END */}
+
+        {/* LOGIN */}
+        <div id="login" className="border" onMouseLeave={this.loginClose}>
+          <Row>
+            <Col style={{ paddingBottom: 20 }}>
+              <div style={{ fontWeight: 600 }}>
+                <i className="fa fa-user" style={{ fontSize: 28 }}></i>
+                <span style={{ marginLeft: 15, fontSize: 24 }}>
+                  Masuk Ke Akun
+                </span>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col style={{ paddingBottom: 17 }}>
+              <Form.Control type="text" placeholder="Email" />
+            </Col>
+          </Row>
+          <Row style={{ paddingBottom: 17 }}>
+            <Col>
+              <Form.Control type="password" placeholder="Password" />
+            </Col>
+          </Row>
+          <Row style={{ paddingBottom: 10 }}>
+            <Col>
+              <Button block style={{ color: "white" }}>
+                MASUK
+              </Button>
+            </Col>
+          </Row>
+          <Row style={{ textAlign: "right", paddingBottom: 15 }}>
+            <Col>
+              <Nav.Link
+                className="linkNav"
+                style={{ fontWeight: 500, color: "black" }}
+              >
+                Lupa Password?
+              </Nav.Link>
+            </Col>
+          </Row>
+          <Row
+            style={{
+              backgroundColor: "whitesmoke",
+              marginLeft: -20,
+              marginRight: -20,
+              textAlign: "center",
+              padding: 10,
+              fontSize: 15
+            }}
+          >
+            <Col>
+              Belum punya akun?
+              <Nav.Link
+                style={{ color: "black", fontWeight: 600, marginTop: -10 }}
+              >
+                Sign Up
+              </Nav.Link>
+            </Col>
+          </Row>
+        </div>
+        {/* LOGIN END */}
+
+        {/* OVERLAY */}
+        <div id="over" onClick={this.closeNav} className="overlay"></div>
+        <div id="over2" className="overlay2"></div>
+        {/* OVERLAY END */}
+      </Fragment>
+    );
+  }
 }
 
-export default Header;
+export default withRouter(Header);

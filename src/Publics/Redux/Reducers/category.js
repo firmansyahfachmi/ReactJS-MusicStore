@@ -16,42 +16,44 @@ const category = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: true,
-                isRejected: false,
-                isFulfilled: false,
+                    isRejected: false,
+                    isFulfilled: false,
             };
         case 'GET_CATEGORY_REJECTED':
             return {
                 ...state,
                 isLoading: false,
-                isRejected: true,
+                    isRejected: true,
             };
         case 'GET_CATEGORY_FULFILLED':
             return {
                 ...state,
                 isLoading: false,
-                isFulfilled: true,
-                categoryData: action.payload.data.data,
+                    isFulfilled: true,
+                    categoryData: action.payload.data.data,
             };
-        
-        //POST CATEGORY///////////////////////////////////////////////////////////////////////////////
+
+            //POST CATEGORY///////////////////////////////////////////////////////////////////////////////
         case 'POST_CATEGORY_PENDING':
             return {
                 ...state,
                 isLoading: true,
-                isRejected: false,
-                isFulfilled: false,
+                    isRejected: false,
+                    isFulfilled: false,
             };
         case 'POST_CATEGORY_REJECTED':
             return {
                 ...state,
                 isLoading: false,
-                isRejected: true,
+                    isRejected: true,
             };
         case 'POST_CATEGORY_FULFILLED':
+            state.categoryData.push(action.payload.data.data)
             return {
                 ...state,
                 isLoading: false,
-                isFulfilled: true,
+                    isFulfilled: true,
+                    categoryData: [...state.categoryData]
             };
 
         default:
