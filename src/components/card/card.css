@@ -1,13 +1,13 @@
-.card-list{
+.card-list {
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap:20px;
+    grid-gap: 20px;
     margin-top: 30px;
 
 }
 
-.card1{
+.card1 {
     display: flex;
     cursor: pointer;
     backface-visibility: hidden;
@@ -16,7 +16,7 @@
     background-color: #F5D372;
 }
 
-.card1>img{
+.card1>img {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -25,6 +25,19 @@
     padding: 10px;
 }
 
-.card1:hover{
+.card1:hover {
     transform: scale(1.02);
+}
+
+.cardCheckout {
+    width: 100%;
+    padding: 20px 40px 40px 40px;
+    height: auto;
+    min-height: 300px;
+}
+
+.cardRow {
+    border-bottom: 1px solid silver;
+    margin-bottom: 25px;
+    padding-bottom: 25px;
 }

@@ -97,6 +97,7 @@ const products = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                     isFulfilled: true,
+                    productsData: [...state.productsData]
             };
 
             //UPDATE PRODUCTS///////////////////////////////////////////////////////////////////////////////

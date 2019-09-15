@@ -1,12 +1,12 @@
-.detail{
+.detail {
     height: auto;
-    padding: 60px 60px 60px 55px;
+    padding: 100px 60px 60px 55px;
     float: left;
     margin: 0;
     width: 100%;
 }
 
-.image{
+.image {
     background-color: #fce7ac;
     height: auto;
     float: left;
@@ -15,21 +15,21 @@
     border-radius: 5px;
 }
 
-.image>img{
+.image>img {
     display: block;
     height: 300px;
-    margin:0 auto;
-    width:auto;
-    
+    margin: 0 auto;
+    width: auto;
+
 }
 
-.detailed{
+.detailed {
     float: right;
-    height:auto;
+    height: auto;
     padding: 20px 20px 20px 40px;
 }
 
-.detailHead{
+.detailHead {
     float: left;
     width: 100%;
 }
@@ -38,31 +38,31 @@
     margin-top: 5px;
     float: left;
     width: 100%;
-    padding:10px 0 10px 0;
-    
+    padding: 10px 0 10px 0;
+
 }
 
-.detailFoot{
+.detailFoot {
     float: left;
-    
+
     vertical-align: middle;
-    width:auto;
+    width: auto;
 }
 
-.info{
-   
+.info {
+
     border: 1px solid grey;
-    border-radius: 3px; 
+    border-radius: 3px;
     padding: 5px;
-    width:200px;
-     
+    width: 200px;
+
 }
 
-.title{
-    float:left;
-    
+.title {
+    float: left;
+
 }
 
-.butgroup{
+.butgroup {
     margin-right: 10px;
 }

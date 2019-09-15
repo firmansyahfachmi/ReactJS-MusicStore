@@ -1,0 +1,22 @@
+.checkout {
+
+    padding: 110px 60px 80px 60px;
+
+}
+
+.topDiv {
+    padding: 20px;
+    height: auto;
+    background-color: whitesmoke;
+    border: 1px solid silver;
+    margin-bottom: 28px
+}
+
+.bottomDiv {
+    background-color: whitesmoke;
+    padding: 30px;
+    margin: 0;
+    height: auto;
+    border: 1px solid silver;
+
+}

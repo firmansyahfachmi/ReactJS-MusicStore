@@ -1,10 +1,11 @@
 .header {
     background-color: #F5D372;
-    height: 90px;
+    height: 70px;
     padding: 10px;
-    position: sticky;
+    width: 100%;
+    position: fixed;
     top: 0;
-    z-index: 5;
+    z-index: 2;
 }
 
 .sidepanel {
@@ -16,7 +17,7 @@
     right: 0;
     background-color: #fff;
     overflow-x: hidden;
-    transition: 0.5s;
+    transition: 0.3s;
     padding-top: 70px;
 }
 
@@ -37,7 +38,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 1;
+    z-index: 2;
     background-color: rgba(0, 0, 0, 0.7);
 }
 

@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-// import { Link } from "react-router-dom";
 import {
   Navbar,
   Nav,
@@ -11,9 +10,11 @@ import {
   Col
   //   ButtonGroup
 } from "react-bootstrap";
+
 import { withRouter } from "react-router-dom";
 import Logo from "./logo.png";
 
+import ModalSignup from "../modal/modalSignup";
 import "./header.css";
 import "./header.css";
 
@@ -66,17 +67,13 @@ class Header extends Component {
     return this.props.history.push(`/item/search?keyword=${searche} `);
   };
 
+  signUp = result => {};
+
   render() {
     return (
       <Fragment>
         {/* NAVBAR */}
-        <Navbar
-          style={{
-            height: 70,
-            backgroundColor: "#F5D372",
-            overflow: "hidden"
-          }}
-        >
+        <Navbar className="shadow-sm header">
           <Navbar.Brand href="/">
             <img
               src={Logo}
@@ -115,13 +112,16 @@ class Header extends Component {
           </Form>
           <Nav className="col-md-2" style={{ fontSize: 22 }}>
             <Nav.Link onClick={this.loginShow} className="ml-1">
-              <i className="fa fa-user"></i>
+              <i className="fa fa-user"></i>{" "}
+              <span style={{ fontSize: 18 }}>&nbsp;Login</span>
             </Nav.Link>
-            <Nav.Link href="/wishlist" className="ml-4">
-              <i className="fa fa-heart"></i>
-            </Nav.Link>
-            <Nav.Link onClick={this.openNav} className="ml-4">
+            <Nav.Link
+              onClick={this.openNav}
+              onMouseOver={this.loginClose}
+              className="ml-4"
+            >
               <i className="fa fa-shopping-cart"></i>
+              <span style={{ fontSize: 18 }}>&nbsp;&nbsp;Cart</span>
             </Nav.Link>
           </Nav>
         </Navbar>
@@ -151,7 +151,11 @@ class Header extends Component {
               <Row>
                 <Col style={{ padding: 0 }}>
                   <a href="/" style={{ textDecoration: "none" }}>
-                    <Button block variant="secondary">
+                    <Button
+                      block
+                      variant="light"
+                      style={{ backgroundColor: "#E28935", color: "white" }}
+                    >
                       BELANJA SEKARANG
                     </Button>
                   </a>
@@ -164,6 +168,7 @@ class Header extends Component {
 
         {/* LOGIN */}
         <div id="login" className="border" onMouseLeave={this.loginClose}>
+          {/* LOGIN FORM */}
           <Row>
             <Col style={{ paddingBottom: 20 }}>
               <div style={{ fontWeight: 600 }}>
@@ -213,13 +218,42 @@ class Header extends Component {
           >
             <Col>
               Belum punya akun?
-              <Nav.Link
-                style={{ color: "black", fontWeight: 600, marginTop: -10 }}
-              >
-                Sign Up
-              </Nav.Link>
+              <ModalSignup
+                handleClick={this.loginClose}
+                handleSignup={this.signUp}
+              />
             </Col>
           </Row>
+          {/* LOGIN FORM END*/}
+
+          {/* LOGINED DIV */}
+          {/* <Row>
+            <Col style={{ paddingBottom: 20 }}>
+              <div style={{ fontWeight: 600, textAlign: "center" }}>
+                <i className="fa fa-user" style={{ fontSize: 48 }}></i>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col style={{ paddingBottom: 12, fontSize: 20 }}>
+              <strong>Name</strong>
+            </Col>
+          </Row>
+          <Row style={{ paddingBottom: 12 }}>
+            <Col>Email</Col>
+          </Row>
+          <Row style={{ paddingBottom: 10 }}>
+            <Col>
+              <a href="/wishlist">My Wishlist</a>
+              <hr />
+            </Col>
+          </Row>
+          <Row style={{ textAlign: "right", paddingBottom: 15 }}>
+            <Col>
+              <Button variant="outline-danger">Logout</Button>
+            </Col>
+          </Row> */}
+          {/* LOGINED DIV END */}
         </div>
         {/* LOGIN END */}
 
