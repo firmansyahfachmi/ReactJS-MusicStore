@@ -74,7 +74,7 @@ class Header extends Component {
       <Fragment>
         {/* NAVBAR */}
         <Navbar className="shadow-sm header">
-          <Navbar.Brand href="/">
+          <Navbar.Brand href="/" style={{ padding: 0, margin: 0 }}>
             <img
               src={Logo}
               alt="logo"
@@ -82,8 +82,9 @@ class Header extends Component {
                 width: "150px"
               }}
             />
+            <span style={{ fontSize: 22, fontWeight: 600 }}>ANEKA MUSIK</span>
           </Navbar.Brand>
-          <Form inline className="ml-auto mr-auto col-lg-8">
+          <Form inline className="ml-auto mr-auto col-lg-7">
             <InputGroup className="col-lg-12">
               <FormControl
                 type="text"
@@ -110,10 +111,10 @@ class Header extends Component {
               </InputGroup.Append>
             </InputGroup>
           </Form>
-          <Nav className="col-md-2" style={{ fontSize: 22 }}>
+          <Nav className="col-md-2" style={{ fontSize: 20 }}>
             <Nav.Link onClick={this.loginShow} className="ml-1">
-              <i className="fa fa-user"></i>{" "}
-              <span style={{ fontSize: 18 }}>&nbsp;Login</span>
+              <i className="fa fa-user"></i>
+              <span style={{ fontSize: 18 }}>&nbsp;&nbsp;Login</span>
             </Nav.Link>
             <Nav.Link
               onClick={this.openNav}
