@@ -17,14 +17,20 @@ export const getProducts = (category, search, page) => {
 export const getProductsTable = () => {
     return {
         type: 'GET_PRODUCTS_TABLE',
-        payload: Axios.get(`http://localhost:4000/anekamusik/productsTable`)
+        payload: Axios.get(`http://localhost:4000/anekamusik/products/`)
     }
 }
 
 export const getProductsDetail = (name) => {
     return {
         type: 'GET_PRODUCTS_DETAIL',
-        payload: Axios.get(`http://localhost:4000/anekamusik/products/detail/${name}`)
+        payload: Axios.get(`http://localhost:4000/anekamusik/products/detail/${name}`, {
+            headers: {
+                authorization: 'musicStoreHeaders',
+                token: localStorage.getItem('token'),
+                user: localStorage.getItem('userId')
+            }
+        })
     }
 }
 

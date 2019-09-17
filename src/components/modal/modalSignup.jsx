@@ -27,6 +27,7 @@ class ModalLayer extends Component {
     return (
       <Fragment>
         <Button
+          className="mb-1"
           variant="link"
           onClick={() => {
             this.props.handleClick();
@@ -34,7 +35,7 @@ class ModalLayer extends Component {
           }}
           style={{ paddingLeft: 5 }}
         >
-          <b>Sign Up</b>
+          <b>Daftar</b>
         </Button>
 
         <Modal
@@ -51,15 +52,30 @@ class ModalLayer extends Component {
             <Form>
               <Form.Group>
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" />
+                <Form.Control
+                  type="text"
+                  name="name"
+                  required
+                  onChange={this.handleChange}
+                />
               </Form.Group>
               <Form.Group>
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="email" />
+                <Form.Control
+                  type="email"
+                  name="email"
+                  required
+                  onChange={this.handleChange}
+                />
               </Form.Group>
               <Form.Group>
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" />
+                <Form.Control
+                  type="password"
+                  name="password"
+                  required
+                  onChange={this.handleChange}
+                />
               </Form.Group>
             </Form>
           </Modal.Body>

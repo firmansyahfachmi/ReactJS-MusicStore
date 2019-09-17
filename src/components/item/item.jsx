@@ -104,7 +104,11 @@ class Item extends Component {
       <Fragment>
         <div className="item">
           {/* Memanggil Component Modal untuk tambah data, dan membawa data dari category dan branch */}
-          <ModalLayer handle={this.addData} />
+          {Number(localStorage.getItem("level")) === 1 ? (
+            <ModalLayer handle={this.addData} />
+          ) : (
+            ""
+          )}
 
           {//Memvalidasi data yang akan ditampilkan
           data.length > 0 ? (

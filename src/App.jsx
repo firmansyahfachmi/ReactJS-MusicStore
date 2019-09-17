@@ -8,6 +8,7 @@ import Footer from "./components/footer/footer.jsx";
 import Detail from "./components/detail/detail.jsx";
 import Item from "./components/item/item.jsx";
 import Checkout from "./components/page/checkout";
+import Wishlist from "./components/page/wishlist";
 
 import store from "./Publics/Redux/store.js";
 
@@ -28,6 +29,7 @@ class App extends Component {
           />
           <Route path="/detail/:name" component={Detail} />
           <Route path="/checkout" component={Checkout} />
+          <Route path="/wishlist" component={Wishlist} />
           <Footer />
         </Router>
       </Provider>

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Button, Col, Row, Form, Badge } from "react-bootstrap";
+import { Button, Col, Row, Form, Badge, ButtonGroup } from "react-bootstrap";
 // import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
@@ -27,7 +27,9 @@ class Detail extends Component {
       dataUpdate: [], //Data table products yang akan di update
       category: [],
       branch: [],
-      dataFiltered: [] // Data yang ter-filter dari data products detail
+      dataFiltered: [],
+      wishlistIcon : 'fa fa-heart-o'
+
     };
   }
 
@@ -92,6 +94,19 @@ class Detail extends Component {
     });
   };
 
+  addWishlist = () => {
+    let x = this.state.wishlistIcon
+    if (x === "fa fa-heart-o") {
+      this.setState({
+        wishlistIcon: "fa fa-heart"
+      })
+    }else{
+      this.setState({
+        wishlistIcon: "fa fa-heart-o"
+      })
+    }
+  }
+
   render() {
     let data = this.state.dataFiltered;
 
@@ -106,46 +121,63 @@ class Detail extends Component {
               <h3 className="title">{data.name} </h3>
               <div style={{ float: "right" }}>
                 {/* Memanggil Component Modal update data */}
-                <ModalLayer
-                  data={data}
-                  handle={this.updateData}
-                  category={this.state.category}
-                  branch={this.state.branch}
-                  dataUpdate={this.state.dataUpdate}
-                />
+                {Number(localStorage.getItem("level")) === 1 ? (
+                  <ModalLayer
+                    data={data}
+                    handle={this.updateData}
+                    category={this.state.category}
+                    branch={this.state.branch}
+                    dataUpdate={this.state.dataUpdate}
+                  />
+                ) : (
+                  ""
+                )}
 
                 {/* Button delete */}
                 {/* <Link to={`/item/${data.category_name}`}> */}
-                <Button
-                  variant="danger"
-                  title="Delete"
-                  onClick={() =>
-                    //Validasi delete
-                    {
-                      Swal.fire({
-                        title: "Are you sure?",
-                        text: "Are you sure want to delete this data",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#E28935",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Delete"
-                      }).then(result => {
-                        if (result.value) {
-                          this.remove(data.id); //Memanggil function delete dengan membawa
-                          Swal.fire(
-                            "Deleted!",
-                            "Your Data has been deleted.",
-                            "success"
-                          );
-                          window.location.href = `/item/${this.state.dataFiltered.category_name}`;
-                        }
-                      });
+                {Number(localStorage.getItem("level")) === 1 ? (
+                  <>
+                  <Button
+                    variant="danger"
+                    title="Delete"
+                    onClick={() =>
+                      //Validasi delete
+                      {
+                        Swal.fire({
+                          title: "Are you sure?",
+                          text: "Are you sure want to delete this data",
+                          type: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#E28935",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Delete"
+                        }).then(result => {
+                          if (result.value) {
+                            this.remove(data.id); //Memanggil function delete dengan membawa
+                            Swal.fire(
+                              "Deleted!",
+                              "Your Data has been deleted.",
+                              "success"
+                            );
+                            window.location.href = `/item/${this.state.dataFiltered.category_name}`;
+                          }
+                        });
+                      }
                     }
-                  }
-                >
-                  <i className="fa fa-trash"></i>
-                </Button>
+                  >
+                    <i className="fa fa-trash"></i>
+                  </Button>
+                  <ButtonGroup>
+                  <Button variant="link" className="" onClick={this.addWishlist}><i style={{color:'red', fontSize:24}} className={this.state.wishlistIcon}></i></Button>
+                  <Button >Tambahkan ke keranjang</Button>
+                  </ButtonGroup>
+                  </>
+                ) : (
+                  <ButtonGroup>
+                  <Button variant="link" className="pr-4" onClick={this.addWishlist}><i style={{color:'red', fontSize:24}} className={this.state.wishlistIcon}></i></Button>
+                  <Button >Tambahkan ke keranjang</Button>
+                  </ButtonGroup>
+                )}
                 {/* </Link> */}
               </div>
             </div>

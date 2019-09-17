@@ -8,23 +8,45 @@ import {
   InputGroup,
   Row,
   Col
-  //   ButtonGroup
 } from "react-bootstrap";
+import jwt from "jsonwebtoken";
+
+import Swal from "sweetalert2";
+
+import { connect } from "react-redux";
+import { register, login, logout } from "../../Publics/Redux/Action/user";
 
 import { withRouter } from "react-router-dom";
 import Logo from "./logo.png";
 
 import ModalSignup from "../modal/modalSignup";
 import "./header.css";
-import "./header.css";
 
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: ""
+      search: "",
+      isLogin: false
     };
   }
+
+  componentDidMount = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      jwt.verify(token, "myMusicStore", (err, decode) => {
+        if (!err) {
+          this.setState({ isLogin: true });
+        } else {
+          localStorage.removeItem("token");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("name");
+          localStorage.removeItem("email");
+          localStorage.removeItem("level");
+        }
+      });
+    }
+  };
 
   loginShow = () => {
     let x = document.getElementById("login");
@@ -61,15 +83,26 @@ class Header extends Component {
     });
   };
 
+  handleForm = event => {
+    let formData = { ...this.state.login };
+    formData[event.target.name] = event.target.value;
+    this.setState({
+      login: formData
+    });
+  };
+
   redirect = () => {
     let searche = this.state.search;
 
-    return this.props.history.push(`/item/search?keyword=${searche} `);
+    return this.props.history.push(`/item/search?keyword=${searche}`);
   };
 
-  signUp = result => {};
+  signUp = result => {
+    this.props.dispatch(register(result));
+  };
 
   render() {
+    const { isLogin } = this.state;
     return (
       <Fragment>
         {/* NAVBAR */}
@@ -84,7 +117,7 @@ class Header extends Component {
             />
             <span style={{ fontSize: 22, fontWeight: 600 }}>ANEKA MUSIK</span>
           </Navbar.Brand>
-          <Form inline className="ml-auto mr-auto col-lg-7">
+          <Form inline className="ml-1 mr-auto col-lg-7">
             <InputGroup className="col-lg-12">
               <FormControl
                 type="text"
@@ -111,19 +144,46 @@ class Header extends Component {
               </InputGroup.Append>
             </InputGroup>
           </Form>
-          <Nav className="col-md-2" style={{ fontSize: 20 }}>
-            <Nav.Link onClick={this.loginShow} className="ml-1">
-              <i className="fa fa-user"></i>
-              <span style={{ fontSize: 18 }}>&nbsp;&nbsp;Login</span>
-            </Nav.Link>
+          <Nav className="col-md-3" style={{ fontSize: 22 }}>
             <Nav.Link
               onClick={this.openNav}
               onMouseOver={this.loginClose}
-              className="ml-4"
+              className=""
             >
               <i className="fa fa-shopping-cart"></i>
-              <span style={{ fontSize: 18 }}>&nbsp;&nbsp;Cart</span>
+              <span style={{ fontSize: 18 }}>&nbsp;&nbsp;</span>
             </Nav.Link>
+            {isLogin ?
+            <Nav.Link
+              onMouseOver={this.loginClose}
+              className="ml-2"
+              href = "/wishlist"
+            >
+              <i className="fa fa-heart"></i>
+            </Nav.Link>
+            :
+            ''
+            }
+            {isLogin ? (
+              <Button
+                onClick={this.loginShow}
+                className="ml-3 pt-0 pb-0 m-1"
+                variant="outer-light"
+              >
+                <span style={{ fontSize: 20 }}>
+                  <i className="fa fa-user"></i>&nbsp;&nbsp;
+                  {localStorage.getItem("name")}
+                </span>
+              </Button>
+            ) : (
+              <Button
+                onClick={this.loginShow}
+                className="ml-5 pt-0 pb-0 m-1"
+                variant="outline-dark"
+              >
+                <span style={{ fontSize: 18 }}>Login</span>
+              </Button>
+            )}
           </Nav>
         </Navbar>
         {/* NAVBAR END */}
@@ -168,94 +228,155 @@ class Header extends Component {
         {/* CART END */}
 
         {/* LOGIN */}
-        <div id="login" className="border" onMouseLeave={this.loginClose}>
-          {/* LOGIN FORM */}
-          <Row>
-            <Col style={{ paddingBottom: 20 }}>
-              <div style={{ fontWeight: 600 }}>
-                <i className="fa fa-user" style={{ fontSize: 28 }}></i>
-                <span style={{ marginLeft: 15, fontSize: 24 }}>
-                  Masuk Ke Akun
-                </span>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col style={{ paddingBottom: 17 }}>
-              <Form.Control type="text" placeholder="Email" />
-            </Col>
-          </Row>
-          <Row style={{ paddingBottom: 17 }}>
-            <Col>
-              <Form.Control type="password" placeholder="Password" />
-            </Col>
-          </Row>
-          <Row style={{ paddingBottom: 10 }}>
-            <Col>
-              <Button block style={{ color: "white" }}>
-                MASUK
-              </Button>
-            </Col>
-          </Row>
-          <Row style={{ textAlign: "right", paddingBottom: 15 }}>
-            <Col>
-              <Nav.Link
-                className="linkNav"
-                style={{ fontWeight: 500, color: "black" }}
-              >
-                Lupa Password?
-              </Nav.Link>
-            </Col>
-          </Row>
-          <Row
-            style={{
-              backgroundColor: "whitesmoke",
-              marginLeft: -20,
-              marginRight: -20,
-              textAlign: "center",
-              padding: 10,
-              fontSize: 15
-            }}
-          >
-            <Col>
-              Belum punya akun?
-              <ModalSignup
-                handleClick={this.loginClose}
-                handleSignup={this.signUp}
-              />
-            </Col>
-          </Row>
-          {/* LOGIN FORM END*/}
+        {/* LOGIN FORM */}
+        {!isLogin ? (
+          <div id="login" className="border" onMouseLeave={this.loginClose}>
+            <Row>
+              <Col style={{ paddingBottom: 20 }}>
+                <div style={{ fontWeight: 600 }}>
+                  <i className="fa fa-user" style={{ fontSize: 28 }}></i>
+                  <span style={{ marginLeft: 15, fontSize: 24 }}>
+                    Masuk Ke Akun
+                  </span>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ paddingBottom: 17 }}>
+                <Form.Control
+                  type="text"
+                  name="email"
+                  placeholder="Email"
+                  onChange={this.handleForm}
+                />
+              </Col>
+            </Row>
+            <Row style={{ paddingBottom: 17 }}>
+              <Col>
+                <Form.Control
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  onChange={this.handleForm}
+                />
+              </Col>
+            </Row>
+            <Row style={{ paddingBottom: 10 }}>
+              <Col>
+                <Button
+                  block
+                  style={{ color: "white" }}
+                  onClick={e => {
+                    e.preventDefault();
+                    this.props
+                      .dispatch(login(this.state.login))
+                      .then(() => {
+                        console.log(this.props.user);
+                        localStorage.setItem("token", this.props.user.token);
+                        localStorage.setItem("userId", this.props.user.id);
+                        localStorage.setItem("name", this.props.user.name);
+                        localStorage.setItem("email", this.props.user.email);
+                        localStorage.setItem("level", this.props.user.level);
+                        Swal.fire({
+                          type: "success",
+                          title: "Login Berhasil",
+                          showConfirmButton: false,
+                          timer: 1500
+                        })
+                        .then(() => {
+                          window.location.reload();
+                        });
+                      })
+                      .catch(err => {
+                        alert(err);
+                      });
+                  }}
+                >
+                  MASUK
+                </Button>
+              </Col>
+            </Row>
+            <Row style={{ textAlign: "right", paddingBottom: 15 }}>
+              <Col>
+                <Nav.Link
+                  className="linkNav"
+                  style={{ fontWeight: 500, color: "black" }}
+                >
+                  Lupa Password?
+                </Nav.Link>
+              </Col>
+            </Row>
+            <Row
+              style={{
+                backgroundColor: "whitesmoke",
+                marginLeft: -20,
+                marginRight: -20,
+                textAlign: "center",
+                padding: 10,
+                fontSize: 15
+              }}
+            >
+              <Col>
+                Belum punya akun?
+                <ModalSignup
+                  handleClick={this.loginClose}
+                  handleSignup={this.signUp}
+                />
+              </Col>
+            </Row>
+          </div>
+        ) : (
+          /* LOGIN FORM END*/
 
-          {/* LOGINED DIV */}
-          {/* <Row>
-            <Col style={{ paddingBottom: 20 }}>
-              <div style={{ fontWeight: 600, textAlign: "center" }}>
-                <i className="fa fa-user" style={{ fontSize: 48 }}></i>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col style={{ paddingBottom: 12, fontSize: 20 }}>
-              <strong>Name</strong>
-            </Col>
-          </Row>
-          <Row style={{ paddingBottom: 12 }}>
-            <Col>Email</Col>
-          </Row>
-          <Row style={{ paddingBottom: 10 }}>
-            <Col>
-              <a href="/wishlist">My Wishlist</a>
+          /* LOGINED DIV */
+          <div id="login" className="border" onMouseLeave={this.loginClose}>
+            <Row>
+              <Col style={{ paddingBottom: 20,justifyContent:'center',display:'flex' }}>
+                <div style={{ fontWeight: 600, textAlign: "center",border:'1px solid silver', borderRadius:100,padding:30,width:110 }}>
+                  <i className="fa fa-user" style={{ fontSize: 48 }}></i>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ paddingBottom: 5, fontSize: 20 }}>
+                <strong>{localStorage.getItem("name")}</strong>&nbsp;&nbsp;
+                <span style={{fontSize:18}}>{Number(localStorage.getItem("level")) === 1 ?
+                '(Admin)' :
+                '(User)'}</span>
+              </Col>
+            </Row>
+            <Row style={{ paddingBottom: 5 }}>
+              <Col>{localStorage.getItem("email")}</Col>
+            </Row>
+            <Row style={{ paddingBottom: 20 }}>
+              <Col>
               <hr />
-            </Col>
-          </Row>
-          <Row style={{ textAlign: "right", paddingBottom: 15 }}>
-            <Col>
-              <Button variant="outline-danger">Logout</Button>
-            </Col>
-          </Row> */}
-          {/* LOGINED DIV END */}
-        </div>
+                <i className="fa fa-history" style={{color:'grey'}}></i>&nbsp;&nbsp;<a href="/transaction">Riwayat Transaksi</a>
+                
+              </Col>
+            </Row>
+            <Row style={{ textAlign: "right", paddingBottom: 15 }}>
+              <Col>
+                <Button
+                  variant="outline-danger"
+                  onClick={e => {
+                    e.preventDefault();
+                    this.props.dispatch(logout());
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("userId");
+                    localStorage.removeItem("name");
+                    localStorage.removeItem("email");
+                    localStorage.removeItem("level");
+                    window.location.reload();
+                  }}
+                >
+                  Logout
+                </Button>
+              </Col>
+            </Row>
+          </div>
+        )}
+        {/* LOGINED DIV END */}
         {/* LOGIN END */}
 
         {/* OVERLAY */}
@@ -267,4 +388,10 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+const mapStateToProps = state => {
+  return {
+    user: state.user.currentUser
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(Header));

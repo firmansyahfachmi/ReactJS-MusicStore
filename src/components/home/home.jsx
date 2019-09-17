@@ -60,7 +60,11 @@ class Home extends Component {
       <Fragment>
         <div className="home">
           {/* Memanggil component Modal menambah data */}
-          <ModalLayer handle={this.addData} />
+          {Number(localStorage.getItem("level")) === 1 ? (
+            <ModalLayer handle={this.addData} />
+          ) : (
+            ""
+          )}
 
           {//Memvalidasi data yang akan ditampilkan
           data.length > 0 ? (
@@ -69,7 +73,7 @@ class Home extends Component {
             //Menampilkan 'No Data' jika tidak ada data
             <h1
               style={{ marginTop: 20, textAlign: "center", zIndex: 0 }}
-              className=""
+              className="alert alert-danger"
             >
               No Data
             </h1>
