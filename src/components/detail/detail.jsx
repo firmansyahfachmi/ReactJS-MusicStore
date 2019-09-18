@@ -17,6 +17,10 @@ import {
   getProductsTable
 } from "../../Publics/Redux/Action/products.js";
 
+import { addWishlist } from "../../Publics/Redux/Action/wishlist.js";
+
+import { addCart } from "../../Publics/Redux/Action/cart.js";
+
 import "./detail.css";
 
 class Detail extends Component {
@@ -28,8 +32,7 @@ class Detail extends Component {
       category: [],
       branch: [],
       dataFiltered: [],
-      wishlistIcon : 'fa fa-heart-o'
-
+      wishlistIcon: "fa fa-heart-o"
     };
   }
 
@@ -95,21 +98,27 @@ class Detail extends Component {
   };
 
   addWishlist = () => {
-    let x = this.state.wishlistIcon
+    let id = localStorage.getItem("userId");
+    let x = this.state.wishlistIcon;
     if (x === "fa fa-heart-o") {
+      this.props.dispatch(addWishlist(this.state.dataFiltered, id));
       this.setState({
         wishlistIcon: "fa fa-heart"
-      })
-    }else{
+      });
+    } else {
       this.setState({
         wishlistIcon: "fa fa-heart-o"
-      })
+      });
     }
-  }
+  };
+
+  addCart = data => {
+    this.props.dispatch(addCart(data));
+  };
 
   render() {
     let data = this.state.dataFiltered;
-
+    console.log("as", data);
     return (
       <Fragment>
         <div className="detail" key={data.id}>
@@ -134,51 +143,73 @@ class Detail extends Component {
                 )}
 
                 {/* Button delete */}
-                {/* <Link to={`/item/${data.category_name}`}> */}
                 {Number(localStorage.getItem("level")) === 1 ? (
                   <>
-                  <Button
-                    variant="danger"
-                    title="Delete"
-                    onClick={() =>
-                      //Validasi delete
-                      {
-                        Swal.fire({
-                          title: "Are you sure?",
-                          text: "Are you sure want to delete this data",
-                          type: "warning",
-                          showCancelButton: true,
-                          confirmButtonColor: "#E28935",
-                          cancelButtonColor: "#d33",
-                          confirmButtonText: "Delete"
-                        }).then(result => {
-                          if (result.value) {
-                            this.remove(data.id); //Memanggil function delete dengan membawa
-                            Swal.fire(
-                              "Deleted!",
-                              "Your Data has been deleted.",
-                              "success"
-                            );
-                            window.location.href = `/item/${this.state.dataFiltered.category_name}`;
-                          }
-                        });
+                    <Button
+                      variant="danger"
+                      title="Delete"
+                      onClick={() =>
+                        //Validasi delete
+                        {
+                          Swal.fire({
+                            title: "Are you sure?",
+                            text: "Are you sure want to delete this data",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#E28935",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Delete"
+                          }).then(result => {
+                            if (result.value) {
+                              this.remove(data.id); //Memanggil function delete dengan membawa
+                              Swal.fire(
+                                "Deleted!",
+                                "Your Data has been deleted.",
+                                "success"
+                              );
+                              window.location.href = `/item/${this.state.dataFiltered.category_name}`;
+                            }
+                          });
+                        }
                       }
-                    }
-                  >
-                    <i className="fa fa-trash"></i>
-                  </Button>
-                  <ButtonGroup>
-                  <Button variant="link" className="" onClick={this.addWishlist}><i style={{color:'red', fontSize:24}} className={this.state.wishlistIcon}></i></Button>
-                  <Button >Tambahkan ke keranjang</Button>
-                  </ButtonGroup>
+                    >
+                      <i className="fa fa-trash"></i>
+                    </Button>
+                    <ButtonGroup>
+                      <Button
+                        variant="link"
+                        className=""
+                        onClick={this.addWishlist}
+                      >
+                        <i
+                          style={{ color: "red", fontSize: 24 }}
+                          className={this.state.wishlistIcon}
+                        ></i>
+                      </Button>
+                      <Button onClick={() => this.addCart(data)}>
+                        Tambahkan ke keranjang
+                      </Button>
+                    </ButtonGroup>
                   </>
-                ) : (
+                ) : Number(localStorage.getItem("level")) === 2 ? (
                   <ButtonGroup>
-                  <Button variant="link" className="pr-4" onClick={this.addWishlist}><i style={{color:'red', fontSize:24}} className={this.state.wishlistIcon}></i></Button>
-                  <Button >Tambahkan ke keranjang</Button>
+                    <Button
+                      variant="link"
+                      className="pr-4"
+                      onClick={this.addWishlist}
+                    >
+                      <i
+                        style={{ color: "red", fontSize: 24 }}
+                        className={this.state.wishlistIcon}
+                      ></i>
+                    </Button>
+                    <Button onClick={() => this.addCart(data)}>
+                      Tambahkan ke keranjang
+                    </Button>
                   </ButtonGroup>
+                ) : (
+                  ""
                 )}
-                {/* </Link> */}
               </div>
             </div>
             <div className="detailBody">

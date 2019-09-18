@@ -15,11 +15,13 @@ import Swal from "sweetalert2";
 
 import { connect } from "react-redux";
 import { register, login, logout } from "../../Publics/Redux/Action/user";
+import { getCart } from "../../Publics/Redux/Action/cart";
 
 import { withRouter } from "react-router-dom";
 import Logo from "./logo.png";
 
 import ModalSignup from "../modal/modalSignup";
+import Cart from "../card/cart";
 import "./header.css";
 
 class Header extends Component {
@@ -31,7 +33,7 @@ class Header extends Component {
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const token = localStorage.getItem("token");
     if (token) {
       jwt.verify(token, "myMusicStore", (err, decode) => {
@@ -46,6 +48,8 @@ class Header extends Component {
         }
       });
     }
+
+    await this.props.dispatch(getCart(localStorage.getItem("userId")));
   };
 
   loginShow = () => {
@@ -153,24 +157,24 @@ class Header extends Component {
               <i className="fa fa-shopping-cart"></i>
               <span style={{ fontSize: 18 }}>&nbsp;&nbsp;</span>
             </Nav.Link>
-            {isLogin ?
-            <Nav.Link
-              onMouseOver={this.loginClose}
-              className="ml-2"
-              href = "/wishlist"
-            >
-              <i className="fa fa-heart"></i>
-            </Nav.Link>
-            :
-            ''
-            }
+            {isLogin ? (
+              <Nav.Link
+                onMouseOver={this.loginClose}
+                className="ml-2"
+                href={`/wishlist/${localStorage.getItem("userId")}`}
+              >
+                <i className="fa fa-heart"></i>
+              </Nav.Link>
+            ) : (
+              ""
+            )}
             {isLogin ? (
               <Button
                 onClick={this.loginShow}
                 className="ml-3 pt-0 pb-0 m-1"
                 variant="outer-light"
               >
-                <span style={{ fontSize: 20 }}>
+                <span style={{ fontSize: 20, color: "rgb(122,105,57)" }}>
                   <i className="fa fa-user"></i>&nbsp;&nbsp;
                   {localStorage.getItem("name")}
                 </span>
@@ -198,15 +202,23 @@ class Header extends Component {
               x
             </Nav.Link>
           </div>
-          <Row className="ml-3 mr-3 mb-2">
-            <Col className="border-bottom a">KERANJANG KOSONG</Col>
+
+          <Row className="ml-3 mr-3 mb-2 mt-2">
+            {this.props.cart.length > 0 ? (
+              <Col>
+                <Cart data={this.props.cart} />
+              </Col>
+            ) : (
+              <Col className="border-bottom a">KERANJANG KOSONG</Col>
+            )}
           </Row>
+
           <Row className="total">
             <Col>
               <Row style={{ marginBottom: 10 }}>
                 <Col style={{ border: "1px solid black", padding: 6 }}>
                   Total
-                  <span style={{ float: "right" }}>Rp.</span>
+                  <span style={{ float: "right" }}>Rp. {this.props.total}</span>
                 </Col>
               </Row>
               <Row>
@@ -271,7 +283,6 @@ class Header extends Component {
                     this.props
                       .dispatch(login(this.state.login))
                       .then(() => {
-                        console.log(this.props.user);
                         localStorage.setItem("token", this.props.user.token);
                         localStorage.setItem("userId", this.props.user.id);
                         localStorage.setItem("name", this.props.user.name);
@@ -282,8 +293,7 @@ class Header extends Component {
                           title: "Login Berhasil",
                           showConfirmButton: false,
                           timer: 1500
-                        })
-                        .then(() => {
+                        }).then(() => {
                           window.location.reload();
                         });
                       })
@@ -331,8 +341,23 @@ class Header extends Component {
           /* LOGINED DIV */
           <div id="login" className="border" onMouseLeave={this.loginClose}>
             <Row>
-              <Col style={{ paddingBottom: 20,justifyContent:'center',display:'flex' }}>
-                <div style={{ fontWeight: 600, textAlign: "center",border:'1px solid silver', borderRadius:100,padding:30,width:110 }}>
+              <Col
+                style={{
+                  paddingBottom: 20,
+                  justifyContent: "center",
+                  display: "flex"
+                }}
+              >
+                <div
+                  style={{
+                    fontWeight: 600,
+                    textAlign: "center",
+                    border: "1px solid silver",
+                    borderRadius: 100,
+                    padding: 30,
+                    width: 110
+                  }}
+                >
                   <i className="fa fa-user" style={{ fontSize: 48 }}></i>
                 </div>
               </Col>
@@ -340,9 +365,11 @@ class Header extends Component {
             <Row>
               <Col style={{ paddingBottom: 5, fontSize: 20 }}>
                 <strong>{localStorage.getItem("name")}</strong>&nbsp;&nbsp;
-                <span style={{fontSize:18}}>{Number(localStorage.getItem("level")) === 1 ?
-                '(Admin)' :
-                '(User)'}</span>
+                <span style={{ fontSize: 18 }}>
+                  {Number(localStorage.getItem("level")) === 1
+                    ? "(Admin)"
+                    : "(User)"}
+                </span>
               </Col>
             </Row>
             <Row style={{ paddingBottom: 5 }}>
@@ -350,9 +377,12 @@ class Header extends Component {
             </Row>
             <Row style={{ paddingBottom: 20 }}>
               <Col>
-              <hr />
-                <i className="fa fa-history" style={{color:'grey'}}></i>&nbsp;&nbsp;<a href="/transaction">Riwayat Transaksi</a>
-                
+                <hr />
+                <i className="fa fa-history" style={{ color: "grey" }}></i>
+                &nbsp;&nbsp;
+                <a href={`/transaction/${localStorage.getItem("userId")}`}>
+                  Riwayat Transaksi
+                </a>
               </Col>
             </Row>
             <Row style={{ textAlign: "right", paddingBottom: 15 }}>
@@ -367,7 +397,7 @@ class Header extends Component {
                     localStorage.removeItem("name");
                     localStorage.removeItem("email");
                     localStorage.removeItem("level");
-                    window.location.reload();
+                    window.location = "/";
                   }}
                 >
                   Logout
@@ -390,7 +420,9 @@ class Header extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user.currentUser
+    user: state.user.currentUser,
+    cart: state.cart.cartData,
+    total: state.cart.total
   };
 };
 

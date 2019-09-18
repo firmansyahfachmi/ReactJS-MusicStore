@@ -9,6 +9,7 @@ import Detail from "./components/detail/detail.jsx";
 import Item from "./components/item/item.jsx";
 import Checkout from "./components/page/checkout";
 import Wishlist from "./components/page/wishlist";
+import Transaction from "./components/page/transaction";
 
 import store from "./Publics/Redux/store.js";
 
@@ -29,7 +30,8 @@ class App extends Component {
           />
           <Route path="/detail/:name" component={Detail} />
           <Route path="/checkout" component={Checkout} />
-          <Route path="/wishlist" component={Wishlist} />
+          <Route path="/wishlist/:id" component={Wishlist} />
+          <Route path="/transaction/:id" component={Transaction} />
           <Footer />
         </Router>
       </Provider>

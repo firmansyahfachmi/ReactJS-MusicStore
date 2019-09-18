@@ -24,13 +24,7 @@ export const getProductsTable = () => {
 export const getProductsDetail = (name) => {
     return {
         type: 'GET_PRODUCTS_DETAIL',
-        payload: Axios.get(`http://localhost:4000/anekamusik/products/detail/${name}`, {
-            headers: {
-                authorization: 'musicStoreHeaders',
-                token: localStorage.getItem('token'),
-                user: localStorage.getItem('userId')
-            }
-        })
+        payload: Axios.get(`http://localhost:4000/anekamusik/products/detail/${name}`)
     }
 }
 
