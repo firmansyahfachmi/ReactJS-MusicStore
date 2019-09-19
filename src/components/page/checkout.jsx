@@ -1,12 +1,17 @@
 import React, { Component, Fragment } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
+import ReactToPrint from "react-to-print";
+import Swal from "sweetalert2";
+
 import { getCart } from "../../Publics/Redux/Action/cart";
 import { connect } from "react-redux";
+
+import { addTransaction } from "../../Publics/Redux/Action/transaction";
 
 import "./page.css";
 import CardC from "../card/cardCheckout";
 
-class Checkout extends Component {
+class PrintCheckout extends Component {
   constructor() {
     super();
     this.state = {};
@@ -26,6 +31,7 @@ class Checkout extends Component {
     return (
       <Fragment>
         <div className="checkout">
+          <h3>ANEKA MUSIK</h3>
           <Row>
             <Col>
               <div className="topDiv">
@@ -129,20 +135,6 @@ class Checkout extends Component {
                   </Form.Group>
                 </Form>
               </div>
-              <div className="container-fluid p-0 mt-3">
-                <Button
-                  block
-                  variant="light"
-                  style={{
-                    fontSize: 18,
-                    backgroundColor: "#E28935",
-                    color: "white",
-                    fontWeight: 500
-                  }}
-                >
-                  CHECKOUT
-                </Button>
-              </div>
             </Col>
           </Row>
         </div>
@@ -151,10 +143,64 @@ class Checkout extends Component {
   }
 }
 
+class Checkout extends Component {
+  addTransaction = () => {
+    this.props.cart
+      .map(cart => this.props.dispatch(addTransaction(cart)))
+      .then(res => {
+        Swal.fire({
+          type: "success",
+          title: "Checkout",
+          position: "top-end",
+          showConfirmButton: true
+        });
+      });
+  };
+
+  render() {
+    return (
+      <div>
+        <PrintCheckout
+          cart={this.props.cart}
+          dispatch={this.props.dispatch}
+          ref={el => (this.componentRef = el)}
+        />
+        <Button
+          className=" col-lg-4 mb-5"
+          style={{
+            marginLeft: 58,
+            // marginTop: -50,
+            fontWeight: 500
+          }}
+          onClick={this.addTransaction}
+        >
+          CHECKOUT
+        </Button>
+        <ReactToPrint
+          trigger={() => (
+            <Button
+              variant="light"
+              className=" mb-5"
+              style={{
+                backgroundColor: "#E28935",
+                color: "white",
+                fontWeight: 500,
+                marginLeft: 10
+              }}
+            >
+              PRINT RECEIPT
+            </Button>
+          )}
+          content={() => this.componentRef}
+        />
+      </div>
+    );
+  }
+}
+
 const mapStateToProps = state => {
   return {
-    cart: state.cart.cartData,
-    total: state.cart.total
+    cart: state.cart.cartData
   };
 };
 

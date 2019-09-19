@@ -47,6 +47,25 @@ const transaction = (state = initialState, action) => {
                     isFulfilled: true,
                     transactionData: action.payload.data.data,
             };
+        case 'POST_TRANSACTION_PENDING':
+            return {
+                ...state,
+                isLoading: true,
+                    isRejected: false,
+                    isFulfilled: false,
+            };
+        case 'POST_TRANSACTION_REJECTED':
+            return {
+                ...state,
+                isLoading: false,
+                    isRejected: true,
+            };
+        case 'POST_TRANSACTION_FULFILLED':
+            return {
+                ...state,
+                isLoading: false,
+                    isFulfilled: true
+            };
         default:
             return state;
     }

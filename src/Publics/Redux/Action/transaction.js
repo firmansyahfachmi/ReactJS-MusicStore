@@ -25,3 +25,16 @@ export const getTransactionAdmin = () => {
         })
     }
 }
+
+export const addTransaction = (data) => {
+    return {
+        type: 'POST_TRANSACTION',
+        payload: Axios.post(`http://localhost:4000/anekamusik/transaction/${localStorage.getItem('userId')}`, data, {
+            headers: {
+                authorization: 'musicStoreHeaders',
+                token: localStorage.getItem('token'),
+                user: localStorage.getItem('userId')
+            }
+        })
+    }
+}

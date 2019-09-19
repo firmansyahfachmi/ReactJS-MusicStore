@@ -7,8 +7,12 @@ import { deleteCart } from "../../Publics/Redux/Action/cart";
 class Cart extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { quantity: 0 };
   }
+
+  deleteCart = async data => {
+    this.props.dispatch(deleteCart(localStorage.getItem("userId"), data.id));
+  };
 
   render() {
     return (
@@ -43,17 +47,13 @@ class Cart extends Component {
                     <Col style={{ fontSize: 14 }}>Jumlah : {cart.quantity}</Col>
                   </Row>
                 </Col>
-
+                {/* {this.load(cart)} */}
                 <Col md={1}>
                   <Button
                     className="p-0"
                     variant="link"
                     style={{ textDecoration: "none", color: "grey" }}
-                    onClick={async () =>
-                      this.props.dispatch(
-                        deleteCart(localStorage.getItem("userId"), cart.id)
-                      )
-                    }
+                    onClick={() => this.deleteCart(cart)}
                   >
                     <i className="fa fa-minus"></i>
                   </Button>

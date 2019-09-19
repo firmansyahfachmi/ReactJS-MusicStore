@@ -60,7 +60,7 @@ class Transaction extends Component {
                         <td>{data.category_name}</td>
                         <td>{data.quantity}</td>
                         <td>{data.branch_name}</td>
-                        <td>{data.price}</td>
+                        <td>Rp. {data.price}</td>
                         <td>{this.convertTimestamp(data.created_date)}</td>
                       </tr>
                     ))}
@@ -85,7 +85,7 @@ class Transaction extends Component {
                         <td>{data.category_name}</td>
                         <td>{data.quantity}</td>
                         <td>{data.branch_name}</td>
-                        <td>{data.price}</td>
+                        <td>Rp. {data.price}</td>
                         <td>{this.convertTimestamp(data.created_date)}</td>
                       </tr>
                     ))}

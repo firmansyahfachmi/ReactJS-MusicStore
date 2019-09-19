@@ -126,15 +126,30 @@ class Detail extends Component {
     let findqty = this.props.cart.filter(cart => cart.id_product === data.id);
     let qty = { ...findqty[0] };
 
-    console.log("s", find);
-
     await this.setState({ quantity: this.state.quantity + qty.quantity || 1 });
-
     if (find === true) {
       let newData = { ...data, quantity: this.state.quantity };
-      this.props.dispatch(editCart(newData));
+      this.props.dispatch(editCart(newData)).then(res => {
+        Swal.fire({
+          type: "success",
+          title: "Ditambahkan ke keranjang",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 1000
+        });
+      });
     } else {
-      this.props.dispatch(addCart(data));
+      this.props.dispatch(addCart(data)).then(res => {
+        Swal.fire({
+          type: "success",
+          title: "Ditambahkan ke keranjang",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 1000
+        });
+      });
     }
   };
 

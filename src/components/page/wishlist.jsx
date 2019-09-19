@@ -7,7 +7,6 @@ import {
   deleteWishlist
 } from "../../Publics/Redux/Action/wishlist";
 
-import { addCart } from "../../Publics/Redux/Action/cart.js";
 
 class Wishlist extends Component {
   constructor() {
@@ -20,11 +19,6 @@ class Wishlist extends Component {
   componentDidMount = async () => {
     let id = this.props.match.params.id;
     await this.props.dispatch(getWishlist(id));
-  };
-
-  addCart = async data => {
-    let datane = data.data;
-    await this.props.dispatch(addCart(datane));
   };
 
   render() {
@@ -60,29 +54,8 @@ class Wishlist extends Component {
                       </td>
                       <td>{wishlist.name}</td>
                       <td>{wishlist.category}</td>
-                      <td>{wishlist.price}</td>
+                      <td>Rp. {wishlist.price}</td>
                       <td>
-                        <Button
-                          style={{
-                            backgroundColor: "#E28935",
-                            border: "none",
-                            borderRadius: 0
-                          }}
-                          onClick={() => {
-                            this.addCart({
-                              data: {
-                                id: wishlist.id,
-                                category_name: wishlist.category,
-                                branch_name: wishlist.branch,
-                                name: wishlist.name,
-                                price: wishlist.price,
-                                url: wishlist.url
-                              }
-                            });
-                          }}
-                        >
-                          Tambahkan Ke Keranjang
-                        </Button>
                         <Button
                           variant="danger"
                           className="ml-3"
