@@ -29,7 +29,8 @@ class Header extends Component {
     super(props);
     this.state = {
       search: "",
-      isLogin: false
+      isLogin: false,
+      level: localStorage.getItem("level")
     };
   }
 
@@ -105,6 +106,12 @@ class Header extends Component {
     this.props.dispatch(register(result));
   };
 
+  total = () => {
+    let count = 0;
+    this.props.cart.map(cart => (count += cart.quantity * cart.price));
+    return count;
+  };
+
   render() {
     const { isLogin } = this.state;
     return (
@@ -149,29 +156,32 @@ class Header extends Component {
             </InputGroup>
           </Form>
           <Nav className="col-md-3" style={{ fontSize: 22 }}>
-            <Nav.Link
-              onClick={this.openNav}
-              onMouseOver={this.loginClose}
-              className=""
-            >
-              <i className="fa fa-shopping-cart"></i>
-              <span style={{ fontSize: 18 }}>&nbsp;&nbsp;</span>
-            </Nav.Link>
-            {isLogin ? (
-              <Nav.Link
-                onMouseOver={this.loginClose}
-                className="ml-2"
-                href={`/wishlist/${localStorage.getItem("userId")}`}
-              >
-                <i className="fa fa-heart"></i>
-              </Nav.Link>
+            {Number(localStorage.getItem("level")) === 2 ? (
+              <>
+                <Nav.Link
+                  onClick={this.openNav}
+                  onMouseOver={this.loginClose}
+                  className=""
+                >
+                  <i className="fa fa-shopping-cart"></i>
+                  <span style={{ fontSize: 18 }}>&nbsp;&nbsp;</span>
+                </Nav.Link>
+
+                <Nav.Link
+                  onMouseOver={this.loginClose}
+                  className="ml-2"
+                  href={`/wishlist/${localStorage.getItem("userId")}`}
+                >
+                  <i className="fa fa-heart"></i>
+                </Nav.Link>
+              </>
             ) : (
               ""
             )}
             {isLogin ? (
               <Button
                 onClick={this.loginShow}
-                className="ml-3 pt-0 pb-0 m-1"
+                className="ml-3 m-1"
                 variant="outer-light"
               >
                 <span style={{ fontSize: 20, color: "rgb(122,105,57)" }}>
@@ -182,7 +192,7 @@ class Header extends Component {
             ) : (
               <Button
                 onClick={this.loginShow}
-                className="ml-5 pt-0 pb-0 m-1"
+                className="ml-5  m-1"
                 variant="outline-dark"
               >
                 <span style={{ fontSize: 18 }}>Login</span>
@@ -218,20 +228,35 @@ class Header extends Component {
               <Row style={{ marginBottom: 10 }}>
                 <Col style={{ border: "1px solid black", padding: 6 }}>
                   Total
-                  <span style={{ float: "right" }}>Rp. {this.props.total}</span>
+                  <span style={{ float: "right" }}>Rp. {this.total()}</span>
                 </Col>
               </Row>
               <Row>
                 <Col style={{ padding: 0 }}>
-                  <a href="/" style={{ textDecoration: "none" }}>
+                  {this.props.cart.length > 0 ? (
                     <Button
                       block
                       variant="light"
                       style={{ backgroundColor: "#E28935", color: "white" }}
+                      onClick={() =>
+                        (window.location = `/checkout/${localStorage.getItem(
+                          "userId"
+                        )}`)
+                      }
                     >
-                      BELANJA SEKARANG
+                      BAYAR
                     </Button>
-                  </a>
+                  ) : (
+                    <a href="/" style={{ textDecoration: "none" }}>
+                      <Button
+                        block
+                        variant="light"
+                        style={{ backgroundColor: "#E28935", color: "white" }}
+                      >
+                        BELANJA SEKARANG
+                      </Button>
+                    </a>
+                  )}
                 </Col>
               </Row>
             </Col>
@@ -380,9 +405,13 @@ class Header extends Component {
                 <hr />
                 <i className="fa fa-history" style={{ color: "grey" }}></i>
                 &nbsp;&nbsp;
-                <a href={`/transaction/${localStorage.getItem("userId")}`}>
-                  Riwayat Transaksi
-                </a>
+                {Number(localStorage.getItem("level")) === 2 ? (
+                  <a href={`/transaction/${localStorage.getItem("userId")}`}>
+                    Riwayat Transaksi
+                  </a>
+                ) : (
+                  <a href={`/transaction/all`}>Data Riwayat Transaksi</a>
+                )}
               </Col>
             </Row>
             <Row style={{ textAlign: "right", paddingBottom: 15 }}>
@@ -421,8 +450,7 @@ class Header extends Component {
 const mapStateToProps = state => {
   return {
     user: state.user.currentUser,
-    cart: state.cart.cartData,
-    total: state.cart.total
+    cart: state.cart.cartData
   };
 };
 

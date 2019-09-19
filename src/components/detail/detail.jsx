@@ -19,7 +19,7 @@ import {
 
 import { addWishlist } from "../../Publics/Redux/Action/wishlist.js";
 
-import { addCart } from "../../Publics/Redux/Action/cart.js";
+import { addCart, editCart } from "../../Publics/Redux/Action/cart.js";
 
 import "./detail.css";
 
@@ -32,7 +32,9 @@ class Detail extends Component {
       category: [],
       branch: [],
       dataFiltered: [],
-      wishlistIcon: "fa fa-heart-o"
+      wishlistIcon: "fa fa-heart-o",
+      isAddedtoCart: false,
+      quantity: 0
     };
   }
 
@@ -112,13 +114,33 @@ class Detail extends Component {
     }
   };
 
-  addCart = data => {
-    this.props.dispatch(addCart(data));
+  addCart = async data => {
+    let find = false;
+    this.props.cart.map(cart => {
+      if (cart.id_product === data.id) {
+        find = true;
+      }
+      return null;
+    });
+
+    let findqty = this.props.cart.filter(cart => cart.id_product === data.id);
+    let qty = { ...findqty[0] };
+
+    console.log("s", find);
+
+    await this.setState({ quantity: this.state.quantity + qty.quantity || 1 });
+
+    if (find === true) {
+      let newData = { ...data, quantity: this.state.quantity };
+      this.props.dispatch(editCart(newData));
+    } else {
+      this.props.dispatch(addCart(data));
+    }
   };
 
   render() {
     let data = this.state.dataFiltered;
-    console.log("as", data);
+
     return (
       <Fragment>
         <div className="detail" key={data.id}>
@@ -175,21 +197,6 @@ class Detail extends Component {
                     >
                       <i className="fa fa-trash"></i>
                     </Button>
-                    <ButtonGroup>
-                      <Button
-                        variant="link"
-                        className=""
-                        onClick={this.addWishlist}
-                      >
-                        <i
-                          style={{ color: "red", fontSize: 24 }}
-                          className={this.state.wishlistIcon}
-                        ></i>
-                      </Button>
-                      <Button onClick={() => this.addCart(data)}>
-                        Tambahkan ke keranjang
-                      </Button>
-                    </ButtonGroup>
                   </>
                 ) : Number(localStorage.getItem("level")) === 2 ? (
                   <ButtonGroup>
@@ -276,7 +283,8 @@ const mapStateToProps = state => {
     data: state.products.detailData,
     products: state.products.productsTable,
     categories: state.category.categoryData,
-    branches: state.branch.branchData
+    branches: state.branch.branchData,
+    cart: state.cart.cartData
   };
 };
 

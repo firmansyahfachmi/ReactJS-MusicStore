@@ -1,6 +1,5 @@
 const initialState = {
     cartData: [],
-    total: 0,
     isLoading: false,
     isFulfilled: false,
     isRejected: false,
@@ -44,15 +43,39 @@ const cart = (state = initialState, action) => {
                     isRejected: true,
             };
         case 'POST_CART_FULFILLED':
-            let newTotal = state.total + action.payload.data.data.price
 
-            state.cartData.push(action.payload.data.data)
+            let addedItem = state.cartData.find(item => item.id_product === action.payload.data.data.id_product)
+
+            let existed_item = state.cartData.find(item => action.payload.data.data.id_product === item.id_product)
+            if (existed_item) {
+                addedItem.quantity += 1
+
+            } else {
+                state.cartData.push(action.payload.data.data)
+
+            };
+            return {
+                ...state,
+                cartData: [...state.cartData]
+            };
+        case 'PATCH_CART_PENDING':
+            return {
+                ...state,
+                isLoading: true,
+                    isRejected: false,
+                    isFulfilled: false,
+            };
+        case 'PATCH_CART_REJECTED':
             return {
                 ...state,
                 isLoading: false,
-                    isFulfilled: true,
-                    cartData: [...state.cartData],
-                    total: newTotal
+                    isRejected: true,
+            };
+        case 'PATCH_CART_FULFILLED':
+            return {
+                ...state,
+                isLoading: false,
+                    isFulfilled: true
             };
         case 'DELETE_CART_PENDING':
             return {
@@ -73,18 +96,11 @@ const cart = (state = initialState, action) => {
 
             })
 
-            let find = state.cartData.filter(cart => {
-                return Number(cart.id) === Number(action.payload.data.data)
-            })
-
-            let min = Number(state.total) - Number(find[0].price)
-
             return {
                 ...state,
                 isLoading: false,
                     isFulfilled: true,
-                    cartData: new_items,
-                    total: min
+                    cartData: new_items
             };
         default:
             return state;

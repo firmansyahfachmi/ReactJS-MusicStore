@@ -12,3 +12,16 @@ export const getTransaction = (uid) => {
         })
     }
 }
+
+export const getTransactionAdmin = () => {
+    return {
+        type: 'GET_TRANSACTION_ADMIN',
+        payload: Axios.get(`http://localhost:4000/anekamusik/transaction/`, {
+            headers: {
+                authorization: 'musicStoreHeaders',
+                token: localStorage.getItem('token'),
+                user: localStorage.getItem('userId')
+            }
+        })
+    }
+}

@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Row, Col, Form, Button } from "react-bootstrap";
+import { getCart } from "../../Publics/Redux/Action/cart";
+import { connect } from "react-redux";
 
 import "./page.css";
 import CardC from "../card/cardCheckout";
@@ -9,6 +11,16 @@ class Checkout extends Component {
     super();
     this.state = {};
   }
+
+  componentDidMount = async () => {
+    await this.props.dispatch(getCart(localStorage.getItem("userId")));
+  };
+
+  total = () => {
+    let count = 0;
+    this.props.cart.map(cart => (count += cart.quantity * cart.price));
+    return count;
+  };
 
   render() {
     return (
@@ -26,7 +38,7 @@ class Checkout extends Component {
                 </h4>
                 <hr />
                 <div>
-                  <CardC />
+                  <CardC data={this.props.cart} />
                 </div>
                 <div
                   style={{
@@ -40,7 +52,8 @@ class Checkout extends Component {
                     padding: 15
                   }}
                 >
-                  Total Rp. <span>-</span>
+                  Total Rp.
+                  <span> {this.total()}</span>
                 </div>
               </div>
             </Col>
@@ -138,4 +151,11 @@ class Checkout extends Component {
   }
 }
 
-export default Checkout;
+const mapStateToProps = state => {
+  return {
+    cart: state.cart.cartData,
+    total: state.cart.total
+  };
+};
+
+export default connect(mapStateToProps)(Checkout);

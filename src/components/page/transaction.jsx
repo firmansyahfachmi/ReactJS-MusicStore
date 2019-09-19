@@ -2,7 +2,10 @@ import React, { Component, Fragment } from "react";
 import { Row, Col, Table } from "react-bootstrap";
 
 import { connect } from "react-redux";
-import { getTransaction } from "../../Publics/Redux/Action/transaction";
+import {
+  getTransaction,
+  getTransactionAdmin
+} from "../../Publics/Redux/Action/transaction";
 
 class Transaction extends Component {
   constructor() {
@@ -12,10 +15,20 @@ class Transaction extends Component {
 
   componentDidMount = async () => {
     let id = this.props.match.params.id;
-    await this.props.dispatch(getTransaction(id));
+    if (Number(localStorage.getItem("level")) === 1) {
+      await this.props.dispatch(getTransactionAdmin());
+    } else {
+      await this.props.dispatch(getTransaction(id));
+    }
+  };
+
+  convertTimestamp = timestamp => {
+    timestamp.toString();
+    return timestamp.slice(0, 10);
   };
 
   render() {
+    console.log(this.props.transaction);
     return (
       <Fragment>
         <div className="transaction">
@@ -26,30 +39,59 @@ class Transaction extends Component {
           </Row>
           <Row>
             <Col>
-              <Table bordered striped>
-                <thead>
-                  <tr>
-                    <th>Nama Produk</th>
-                    <th>Kategori</th>
-                    <th>Quantity</th>
-                    <th>Cabang</th>
-                    <th>Harga</th>
-                    <th>Tanggal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.transaction.map(data => (
+              {Number(localStorage.getItem("level")) === 1 ? (
+                <Table bordered striped>
+                  <thead>
                     <tr>
-                      <td>{data.name}</td>
-                      <td>{data.id_category}</td>
-                      <td>{data.quantity}</td>
-                      <td>{data.id_branch}</td>
-                      <td>{data.price}</td>
-                      <td>{data.created_date}</td>
+                      <th>Id User</th>
+                      <th>Nama Produk</th>
+                      <th>Kategori</th>
+                      <th>Quantity</th>
+                      <th>Cabang</th>
+                      <th>Harga</th>
+                      <th>Tanggal</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
+                  </thead>
+                  <tbody>
+                    {this.props.transaction.map(data => (
+                      <tr>
+                        <td>{data.id_user}</td>
+                        <td>{data.name}</td>
+                        <td>{data.category_name}</td>
+                        <td>{data.quantity}</td>
+                        <td>{data.branch_name}</td>
+                        <td>{data.price}</td>
+                        <td>{this.convertTimestamp(data.created_date)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              ) : (
+                <Table bordered striped>
+                  <thead>
+                    <tr>
+                      <th>Nama Produk</th>
+                      <th>Kategori</th>
+                      <th>Quantity</th>
+                      <th>Cabang</th>
+                      <th>Harga</th>
+                      <th>Tanggal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.props.transaction.map(data => (
+                      <tr>
+                        <td>{data.name}</td>
+                        <td>{data.category_name}</td>
+                        <td>{data.quantity}</td>
+                        <td>{data.branch_name}</td>
+                        <td>{data.price}</td>
+                        <td>{this.convertTimestamp(data.created_date)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
             </Col>
           </Row>
         </div>

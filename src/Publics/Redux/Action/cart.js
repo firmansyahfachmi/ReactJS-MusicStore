@@ -26,6 +26,19 @@ export const addCart = (data) => {
     }
 }
 
+export const editCart = (data) => {
+    return {
+        type: 'PATCH_CART',
+        payload: Axios.patch(`http://localhost:4000/anekamusik/cart/${localStorage.getItem('userId')}/${data.id}`, data, {
+            headers: {
+                authorization: 'musicStoreHeaders',
+                token: localStorage.getItem('token'),
+                user: localStorage.getItem('userId')
+            }
+        })
+    }
+}
+
 export const deleteCart = (uid, id) => {
     return {
         type: 'DELETE_CART',
