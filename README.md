@@ -26,10 +26,10 @@ This is MusicStore Website for selling Music Instrument and included Admin Featu
 ## Screenshot
 <p align="center">
     <span>
-      <img src="https://user-images.githubusercontent.com/52324743/67119954-73582380-f212-11e9-97f3-040ab60a6287.jpg" width="450px" />&nbsp;&nbsp;
-      <img src="https://user-images.githubusercontent.com/52324743/67120000-8e2a9800-f212-11e9-8610-462e00ac2f1a.jpg" width="350px" />
+      <img src="https://user-images.githubusercontent.com/52324743/67119954-73582380-f212-11e9-97f3-040ab60a6287.jpg" width="450px" />
     </span><br/><br/>
-  
+    <span>
+     <img src="https://user-images.githubusercontent.com/52324743/67120000-8e2a9800-f212-11e9-8610-462e00ac2f1a.jpg" width="450px" />       </span><br/><br/>
   <span>
     <img src="https://user-images.githubusercontent.com/52324743/67120296-36406100-f213-11e9-98c7-6b3d0d2848a9.jpg" width="400px" />&nbsp;&nbsp;
     <img src="https://user-images.githubusercontent.com/52324743/67120322-45bfaa00-f213-11e9-9549-cb06bdd4a7e5.jpg" width="400px" />
