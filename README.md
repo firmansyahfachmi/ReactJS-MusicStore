@@ -1,4 +1,4 @@
-<h1 align="center">Music Store - ReactJS</h1>
+<h1 align="center">MusicStore - ReactJS</h1>
 
 <p align="center">
   
