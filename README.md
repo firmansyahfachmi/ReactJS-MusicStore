@@ -50,4 +50,4 @@ This is MusicStore Website for selling Music Instrument and included Admin Featu
 
 ## License
 
-M Fachmi Firmansyah - &copy; 2019
+Mohammad Fachmi Firmansyah - &copy; 2019
