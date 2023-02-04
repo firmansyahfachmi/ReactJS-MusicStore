@@ -10,8 +10,6 @@
   <img src="https://img.shields.io/badge/ReactJS-16.10-blue.svg?style=flat-square" alt="npm version">
 </a>
 
-## Related Project
-express JS (https://github.com/firmansyahfachmi/Backend-MusicStore.git)
 
 ## Introduction
 
